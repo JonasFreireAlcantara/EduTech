@@ -136,7 +136,7 @@ export default {
       menu: false,
       menu2: false,
       workspaces: ['workspace 1', 'workspace 2', 'workspace 3'],
-      progress: 30,
+      progress: 70,
       alignCenter: 'center',
       options: {
         colors: ['#541388'],

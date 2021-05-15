@@ -22,6 +22,6 @@ export default {
   }
 
   .v-progress-linear__background {
-    opacity: 0.9 !important;
+    opacity: 0.75 !important;
   }
 </style>
