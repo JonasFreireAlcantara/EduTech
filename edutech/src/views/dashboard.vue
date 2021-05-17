@@ -187,6 +187,7 @@ export default {
 }
 
 .progress-bar {
+  color: #2E294E;
   padding-right: 20px;
   background: none;
 }
@@ -204,13 +205,5 @@ export default {
 
 .v-progress-linear__background {
   opacity: 0.9 !important;
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: all 4s ease;
-}
-
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
 }
 </style>
