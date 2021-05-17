@@ -1,0 +1,78 @@
+<template>
+  <div role="tablist" :class="hasMargin ? 'mt-5' : ''">
+    <b-row>
+      <b-col :cols="isMinimized? '12' :'10'">
+        <b-card no-body class="mb-1">
+          <b-card-header header-tag="header" class="pr-4 accordion" role="tab" style="max-height:60px;">
+            <b-button variant="warning" block :aria-expanded="isExpanded ? 'true' : 'false'" :aria-controls="'accordion-'+time.id" @click="isExpanded = !isExpanded" class="btn-icon text-dark"  style="max-height:40px;">
+              <b-row>
+                <b-col cols="11">
+                  <h3 class="mb-0">{{isTime?time.time:time.date}}</h3>
+                </b-col>
+                <b-col cols="1">
+                  <p class="h3">
+                    <b-icon icon="chevron-down"></b-icon>
+                  </p>
+                </b-col>
+              </b-row>
+            </b-button>
+          </b-card-header>
+          <b-collapse :id="'accordion-'+time.id" accordion="my-accordion" v-model="isExpanded" role="tabpanel" v-for="(task,index) in time.tasks" :key="task.id">
+            <b-card-body>
+              <b-row>
+                <b-col :cols="isMinimized? '3' :'2'" class="text-center">
+                  <b-img left v-bind="task.img" blank-color="#777" alt="HEX shorthand color image (#777)"></b-img>
+                </b-col>
+                <b-col :cols="isMinimized? '8' :'6'">
+                  <b-card-text class="text-dark">
+                    <h4>{{task.title}}<span class="task-label" :style="'background-color: '+task.labelColor+';'">{{task.label}}</span></h4>
+                  </b-card-text>
+                  <b-card-text class="text-dark">{{task.description}}</b-card-text>
+                </b-col>
+                <b-col cols="4" class="text-center" v-if="!isMinimized">
+                  <b-button variant="outline-primary">+ ADD TO CALENDAR</b-button>
+                </b-col>
+              </b-row>
+            </b-card-body>
+            <hr v-if="index < time.tasks.length-1" class="text-dark">
+          </b-collapse>
+        </b-card>
+      </b-col>
+    </b-row>
+  </div>
+</template>
+
+<script>
+export default ({
+  props: {
+    time: Object,
+    hasMargin: Boolean,
+    isExpanded: Boolean,
+    isTime: Boolean,
+    isMinimized: Boolean
+  }
+})
+</script>
+
+<style>
+.accordion {
+  background-color: #FFD400;
+}
+.btn-icon {
+  background: none;
+  border: none;
+  width: 100%;
+}
+.btn {
+  text-align: left;
+}
+.col-1 {
+  text-align: center;
+}
+.task-label {
+  font-size: small;
+  padding: 5px 20px;
+  margin-left: 40px;
+  border-radius: 15px;
+}
+</style>
