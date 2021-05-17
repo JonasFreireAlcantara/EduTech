@@ -2,10 +2,11 @@
   <div>
     <v-row class="filter">
       <v-col>
-        <strong >Workspace</strong>
+        <strong>Workspace</strong>
         <v-select
           class="mt-2"
           :items="workspaces"
+          v-model="actualWorkspace"
           label="Selecione um workspace"
           solo
         ></v-select>
@@ -25,7 +26,7 @@
               <v-text-field
                 class="mt-2"
                 v-model="initialDate"
-                label="Picker without buttons"
+                label="Período Inicial"
                 prepend-icon="mdi-calendar"
                 readonly
                 v-bind="attrs"
@@ -54,7 +55,7 @@
               <v-text-field
                 class="mt-2"
                 v-model="endDate"
-                label="Picker without buttons"
+                label="Período Final"
                 prepend-icon="mdi-calendar"
                 readonly
                 v-bind="attrs"
@@ -85,7 +86,7 @@
 
     <v-row class="workspace-info" >
       <v-col class="progress-bar" md="8">
-        <strong>Progresso do Workspace X</strong>
+        <strong v-if="actualWorkspace !== null">Progresso do {{actualWorkspace}}</strong>
         <v-progress-linear
           class="mt-2"
           :buffer-value="progress"
@@ -105,10 +106,10 @@
             :rotate="360"
             :size="70"
             :width="5"
-            :value="100"
+            :value="90"
             color="#541388"
           >
-            <span class="hours">30 h</span>
+            <span class="hours">35 h</span>
           </v-progress-circular>
         </v-row>
       </v-col>
@@ -135,8 +136,9 @@ export default {
       endDate: new Date().toISOString().substr(0, 10),
       menu: false,
       menu2: false,
-      workspaces: ['workspace 1', 'workspace 2', 'workspace 3'],
-      progress: 70,
+      workspaces: ['Workspace 1', 'Workspace 2', 'Workspace 3'],
+      actualWorkspace: null,
+      progress: 75,
       alignCenter: 'center',
       options: {
         colors: ['#541388'],
@@ -147,48 +149,62 @@ export default {
           categories: ['01/02', '02/02', '03/02', '04/02', '05/02', '06/02', '07/02', '08/02']
         }
       },
-      series: [{
-        name: 'Horas estudadas',
-        data: [2, 3, 1, 1, 4, 3, 2, 2]
-      }]
+      series: [
+        {
+          name: 'Horas estudadas',
+          data: [2.8, 3.4, 1.91, 1.12, 4, 3.25, 2.5, 2.3]
+        },
+        {
+          name: 'Horas livre',
+          data: [4.2, 3.6]
+        }
+      ]
     }
   }
 }
 </script>
 
 <style scoped>
-  .filter {
-    width: 80%;
-    margin: 0 auto;
-  }
+.filter {
+  width: 80%;
+  margin: 0 auto;
+}
 
-  .h-line {
-    height: 1px;
-    width: 100%;
-    display: inline-block;
-    border-bottom: 1px solid rgb(211, 211, 211);
-  }
+.h-line {
+  height: 1px;
+  width: 100%;
+  display: inline-block;
+  border-bottom: 1px solid rgb(211, 211, 211);
+}
 
-  .workspace-info {
-    width: 80%;
-    margin: 0 auto;
-  }
+.workspace-info {
+  width: 80%;
+  margin: 0 auto;
+}
 
-  .progress-bar {
-    padding-right: 20px;
-  }
+.progress-bar {
+  padding-right: 20px;
+}
 
-  .vertical-text {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-  }
+.vertical-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
 
-  .hours {
-    font-size: 120%;
-    font-weight: bold;
-  }
+.hours {
+  font-size: 120%;
+  font-weight: bold;
+}
 
-  .v-progress-linear__background {
-    opacity: 0.9 !important;
-  }
+.v-progress-linear__background {
+  opacity: 0.9 !important;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: all 4s ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
 </style>
