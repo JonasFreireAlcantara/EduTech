@@ -1,8 +1,8 @@
 <template>
   <b-container fluid>
     <NextEvents></NextEvents>
-    <b-row class="mt-5">
-      <b-col cols="5" md="5" sm="12" class="component-bg mx-auto p-3 shadow rounded">
+    <b-row>
+      <b-col md="5" sm="12" class="mt-5 component-bg mx-auto p-3 shadow rounded">
         <b-row>
           <b-col cols="10">
             <h2>Próximos Eventos</h2>
@@ -17,7 +17,7 @@
           </div>
         </b-row>
       </b-col>
-      <b-col cols="5" md="5" sm="12" class="component-bg mx-auto p-3 shadow rounded">
+      <b-col md="5" sm="12" class="mt-5 component-bg mx-auto p-3 shadow rounded">
         <b-row>
           <b-col cols="10">
             <h2>Calendário</h2>
@@ -29,8 +29,8 @@
       </b-col>
     </b-row>
 
-    <b-row class="mt-5">
-      <b-col cols="5" md="5" sm="12" class="component-bg mx-auto p-3 shadow rounded">
+    <b-row>
+      <b-col md="5" sm="12" class="mt-5 component-bg mx-auto p-3 shadow rounded">
         <b-row>
           <b-col cols="10">
             <h2>Quadro</h2>
@@ -40,7 +40,7 @@
           </b-col>
         </b-row>
       </b-col>
-      <b-col cols="5" md="5" sm="12" class="component-bg mx-auto p-3 shadow rounded">
+      <b-col md="5" sm="12" class="mt-5 component-bg mx-auto p-3 shadow rounded">
         <b-row>
           <b-col cols="10">
             <h2>Tempo</h2>

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-row class="filter">
-      <v-col>
+    <b-row class="filter">
+      <b-col>
         <strong>Workspace</strong>
         <v-select
           class="mt-2"
@@ -10,9 +10,9 @@
           label="Selecione um workspace"
           solo
         ></v-select>
-      </v-col>
+      </b-col>
 
-        <v-col cols="8" sm="6" md="3" >
+        <b-col cols="8" sm="6" md="3" >
           <strong >Período Inicial</strong>
           <v-menu
             v-model="menu"
@@ -39,9 +39,9 @@
               color="#541388"
             ></v-date-picker>
           </v-menu>
-        </v-col>
+        </b-col>
 
-      <v-col cols="8" sm="6" md="3" >
+      <b-col cols="8" sm="6" md="3" >
           <strong>Período Final</strong>
           <v-menu
             v-model="menu2"
@@ -68,9 +68,9 @@
               color="#541388"
             ></v-date-picker>
           </v-menu>
-        </v-col>
+        </b-col>
 
-      <v-col :align="alignCenter">
+      <b-col :align="alignCenter">
         <v-btn
           class="mt-10"
           rounded
@@ -79,13 +79,13 @@
         >
           Filtrar
         </v-btn>
-      </v-col>
-    </v-row>
+      </b-col>
+    </b-row>
 
     <div class="h-line"></div>
 
-    <v-row class="workspace-info" >
-      <v-col class="progress-bar" md="8">
+    <b-row class="workspace-info" >
+      <b-col class="progress-bar" md="8">
         <strong v-if="actualWorkspace !== null">Progresso do {{actualWorkspace}}</strong>
         <v-progress-linear
           class="mt-2"
@@ -97,12 +97,12 @@
         >
           <strong>{{ Math.ceil(progress) }}%</strong>
         </v-progress-linear>
-      </v-col>
-      <v-col>
-        <v-row :justify="alignCenter"><strong>Total de horas estudadas</strong></v-row>
-        <v-row :justify="alignCenter">
+      </b-col>
+      <b-col>
+        <b-row :justify="alignCenter" class="text-center"><strong>Total de horas estudadas</strong></b-row>
+        <b-row :justify="alignCenter">
           <v-progress-circular
-            class="mt-2"
+            class="mt-2 mx-auto"
             :rotate="360"
             :size="70"
             :width="5"
@@ -111,20 +111,24 @@
           >
             <span class="hours">35 h</span>
           </v-progress-circular>
-        </v-row>
-      </v-col>
-    </v-row>
+        </b-row>
+      </b-col>
+    </b-row>
 
-    <v-row :justify="alignCenter" :align="alignCenter">
-      <span class="vertical-text">
-        <strong>Horas</strong>
-      </span>
-      <apexchart width="700" type="bar" :options="options" :series="series"></apexchart>
-    </v-row>
+    <b-row :justify="alignCenter" :align="alignCenter">
+      <b-col cols="1" offset-md="2" style="writing-mode: vertical-lr;">
+        <span class="vertical-text">
+          <strong>Horas</strong>
+        </span>
+      </b-col>
+      <b-col cols="6" cols-sm="11">
+        <apexchart width="700" type="bar" :options="options" :series="series"></apexchart>
+      </b-col>
+    </b-row>
 
-    <v-row :justify="alignCenter">
+    <b-row :justify="alignCenter" class="text-center">
       <strong>Dias</strong>
-    </v-row>
+    </b-row>
   </div>
 </template>
 
@@ -184,11 +188,13 @@ export default {
 
 .progress-bar {
   padding-right: 20px;
+  background: none;
 }
 
 .vertical-text {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
+  padding-right: 20%;
 }
 
 .hours {
