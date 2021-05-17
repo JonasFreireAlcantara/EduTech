@@ -171,7 +171,7 @@ export default {
 <style scoped>
 .filter {
   width: 80%;
-  margin: 0 auto;
+  margin: 1% auto 0;
 }
 
 .h-line {
