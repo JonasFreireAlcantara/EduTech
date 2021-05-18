@@ -1,25 +1,29 @@
 <template>
   <v-app-bar
       absolute
+      elevate-on-scroll
       color="#541388"
       class="nav"
     >
-      <v-app-bar-nav-icon color="#FFF" @click="sendData(true, false)"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon v-if="isLogged" color="#FFF" @click="sendData(true, false)"/>
 
       <v-spacer></v-spacer>
       <v-col>
         <v-toolbar-title :align="`center`">
-          <span class="logo">EduTech</span>
+          <router-link :to="isLogged ? { name: 'Dashboard' } : { name: 'Login' }">
+            <span class="logo">EduTech</span>
+          </router-link>
         </v-toolbar-title>
       </v-col>
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
+      <v-btn icon v-if="isLogged">
         <v-icon color="#FFF">mdi-view-dashboard-outline</v-icon>
       </v-btn>
+      <v-btn elevation="2" v-else :to="{ name: 'PerformLogin' }" :hidden="$route.name === 'PerformLogin'">Login</v-btn>
 
-      <v-btn icon @click="sendData(false, true)">
+      <v-btn v-if="isLogged" icon @click="sendData(false, true)">
         <v-icon x-large color="#FFF" >
           mdi-account-circle-outline
         </v-icon>
@@ -32,6 +36,9 @@ export default {
   data: () => ({
     group: null
   }),
+  props: {
+    isLogged: Boolean
+  },
   methods: {
     sendData: function (work, profile) {
       this.$emit('newdata', [work, profile])
@@ -52,5 +59,9 @@ export default {
     color: #FFF;
     font-size: 120%;
     font-weight: bold;
+  }
+
+  a {
+    text-decoration: none;
   }
 </style>

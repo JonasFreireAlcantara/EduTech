@@ -1,25 +1,19 @@
 <template>
   <div>
-    <Topbar/>
+    <TopComponent :isLogged="false"/>
     <div class="login-div text-center">
       <h4>Para continuar, faça login com sua conta Google</h4>
-      <b-button block @click="performLogin" variant="primary">Fazer login com conta Google</b-button>
+      <b-button :to="{ name: 'Dashboard' }" variant="primary">Fazer login com conta Google</b-button>
     </div>
   </div>
 </template>
 
 <script>
-import Topbar from './topbar.vue'
-import router from '../router'
+import TopComponent from '../components/top-component.vue'
 
 export default {
   components: {
-    Topbar
-  },
-  methods: {
-    performLogin () {
-      router.push({ name: 'Dashboard' })
-    }
+    TopComponent
   }
 }
 </script>
@@ -32,6 +26,10 @@ export default {
 
 button {
   width: 30%;
+}
+
+a {
+  color: #fff !important;
 }
 
 h4 {

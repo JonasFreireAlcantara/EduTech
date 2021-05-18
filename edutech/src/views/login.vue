@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Topbar :isLogged="false"/>
+    <TopComponent :isLogged="false"/>
     <div>
       <b-img src="https://burst.shopifycdn.com/photos/wrtiting-tools.jpg?width=1200&format=pjpg&exif=0&iptc=0" fluid-grow></b-img>
     </div>
@@ -8,21 +8,11 @@
 </template>
 
 <script>
-import router from '../router'
-import Topbar from './topbar.vue'
+import TopComponent from '../components/top-component.vue'
 
 export default {
-  data: () => {
-    return {
-    }
-  },
-  methods: {
-    goToHome: function () {
-      router.push({ name: 'Dashboard' })
-    }
-  },
   components: {
-    Topbar
+    TopComponent
   }
 }
 </script>

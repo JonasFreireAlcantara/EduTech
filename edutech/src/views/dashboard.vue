@@ -1,10 +1,6 @@
 <template>
   <div>
-    <top-menu @newdata="handleData($event)" />
-    <left-side-menu :drawer="leftSideMenuActive" @newdata="handleData($event)" />
-    <right-side-menu :drawer="rightSideMenuActive" @newdata="handleData($event)" />
-
-   <!-- <Topbar :isLogged="true" userName="João Victor"/> -->
+    <TopComponent :isLogged="true"/>
     <b-row class="filter">
       <b-col>
         <strong>Workspace</strong>
@@ -139,25 +135,17 @@
 </template>
 
 <script>
-import TopMenu from '../components/top-menu'
-import LeftSideMenu from '../components/left-side-menu'
-import RightSideMenu from '../components/right-side-menu'
-
-// import Topbar from './topbar'
+import TopComponent from '../components/top-component.vue'
 
 export default {
   components: {
-    TopMenu,
-    LeftSideMenu,
-    RightSideMenu
+    TopComponent
   },
-
   methods: {
     handleData: function (e) {
       [this.leftSideMenuActive, this.rightSideMenuActive] = e
     }
   },
-
   data: () => {
     return {
       initialDate: new Date().toISOString().substr(0, 10),

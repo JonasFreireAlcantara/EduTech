@@ -2,17 +2,17 @@
   <b-modal id="nextEvents" title="Próximos Eventos" size="xl" hide-footer header-class="text-dark" header-close-content="<h2>&times;</h2>" scrollable>
     <b-tabs content-class="mt-2" nav-class="text-dark" pills>
       <b-tab title="Hoje" title-link-class="tab" active>
-        <div v-for="time in times" :key="time.id">
+        <div v-for="(time, index) in times" :key="time.id">
           <Event :time="time" :hasMargin="index !== 0" :isTime="true" :isMinimized="false" accordion="1"></Event>
         </div>
       </b-tab>
       <b-tab title="Nessa Semana" title-link-class="tab">
-        <div v-for="time in times" :key="time.id">
+        <div v-for="(time, index) in times" :key="time.id">
           <Event :time="time" :hasMargin="index !== 0" :isTime="false" :isMinimized="false" accordion="2"></Event>
         </div>
       </b-tab>
       <b-tab title="Nesse Mês" title-link-class="tab">
-        <div v-for="time in times" :key="time.id">
+        <div v-for="(time, index) in times" :key="time.id">
           <Event :time="time" :hasMargin="index !== 0" :isTime="false" :isMinimized="false" accordion="3"></Event>
         </div>
       </b-tab>
