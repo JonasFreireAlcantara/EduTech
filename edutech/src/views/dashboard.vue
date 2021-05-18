@@ -235,3 +235,9 @@ export default {
   opacity: 0.9 !important;
 }
 </style>
+
+<style>
+.v-menu__content.theme--light.menuable__content__active {
+  z-index: 12!important;
+}
+</style>

@@ -2,18 +2,18 @@
   <b-modal id="nextEvents" title="Próximos Eventos" size="xl" hide-footer header-class="text-dark" header-close-content="<h2>&times;</h2>" scrollable>
     <b-tabs content-class="mt-3" nav-class="text-dark" pills>
       <b-tab title="Hoje" title-link-class="tab" active>
-        <div v-for="(time, index) in times" :key="time.id">
-          <Event :time="time" :hasMargin="index !== 0" :isExpanded="index === 0" :isTime="true" :isMinimized="false"></Event>
+        <div v-for="time in times" :key="time.id">
+          <Event :time="time" :hasMargin="index !== 0" :isExpanded="time.visible" :isTime="true" :isMinimized="false"></Event>
         </div>
       </b-tab>
       <b-tab title="Nessa Semana" title-link-class="tab">
-        <div v-for="(time, index) in times" :key="time.id">
-          <Event :time="time" :hasMargin="index !== 0" :isExpanded="index === 0" :isTime="false" :isMinimized="false"></Event>
+        <div v-for="time in times" :key="time.id">
+          <Event :time="time" :hasMargin="index !== 0" :isExpanded="time.visible" :isTime="false" :isMinimized="false"></Event>
         </div>
       </b-tab>
       <b-tab title="Nesse Mês" title-link-class="tab">
-        <div v-for="(time, index) in times" :key="time.id">
-          <Event :time="time" :hasMargin="index !== 0" :isExpanded="index === 0" :isTime="false" :isMinimized="false"></Event>
+        <div v-for="time in times" :key="time.id">
+          <Event :time="time" :hasMargin="index !== 0" :isExpanded="time.visible" :isTime="false" :isMinimized="false"></Event>
         </div>
       </b-tab>
     </b-tabs>
@@ -31,6 +31,7 @@ export default ({
           id: 0,
           time: '14:00',
           date: '17/05',
+          visible: true,
           tasks: [
             {
               id: 0,
@@ -54,6 +55,7 @@ export default ({
           id: 1,
           time: '18:00',
           date: '18/05',
+          visible: false,
           tasks: [
             {
               id: 0,
