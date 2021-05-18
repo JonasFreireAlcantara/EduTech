@@ -1,5 +1,7 @@
 <template>
-  <b-container fluid>
+  <div>
+    <Topbar :isLogged="true" userName="João Victor"/>
+    <b-container fluid>
     <NextEvents></NextEvents>
     <b-row>
       <b-col md="5" sm="12" class="mt-5 component-bg mx-auto p-3 shadow rounded">
@@ -52,11 +54,13 @@
       </b-col>
     </b-row>
   </b-container>
+  </div>
 </template>
 
 <script>
 import NextEvents from './nextEvents.vue'
 import Event from './event.vue'
+import Topbar from './topbar'
 
 export default ({
   data () {
@@ -105,7 +109,8 @@ export default ({
   },
   components: {
     NextEvents,
-    Event
+    Event,
+    Topbar
   }
 })
 </script>
@@ -115,5 +120,6 @@ export default ({
       background-color: #541388;
       color: white;
       min-height:44vh;
+      margin-bottom: 12px;
   }
 </style>

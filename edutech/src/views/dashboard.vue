@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Topbar :isLogged="true" userName="João Victor"/>
     <b-row class="filter">
       <b-col>
         <strong>Workspace</strong>
@@ -87,6 +88,7 @@
     <b-row class="workspace-info" >
       <b-col class="progress-bar" md="8">
         <strong v-if="actualWorkspace !== null">Progresso do {{actualWorkspace}}</strong>
+        <strong v-else>_</strong>
         <v-progress-linear
           class="mt-2"
           :buffer-value="progress"
@@ -133,6 +135,8 @@
 </template>
 
 <script>
+import Topbar from './topbar'
+
 export default {
   data: () => {
     return {
@@ -164,6 +168,9 @@ export default {
         }
       ]
     }
+  },
+  components: {
+    Topbar
   }
 }
 </script>
