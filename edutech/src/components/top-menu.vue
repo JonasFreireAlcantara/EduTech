@@ -18,7 +18,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon v-if="isLogged">
+      <v-btn icon v-if="isLogged" :to="{ name: 'Dashboard' }">
         <v-icon color="#FFF">mdi-view-dashboard-outline</v-icon>
       </v-btn>
       <v-btn elevation="2" v-else :to="{ name: 'PerformLogin' }" :hidden="$route.name === 'PerformLogin'">Login</v-btn>

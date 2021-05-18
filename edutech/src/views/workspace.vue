@@ -1,7 +1,7 @@
 <template>
   <div>
     <TopComponent :isLogged="true"/>
-    <b-container fluid>
+    <b-container fluid class="margin-top">
       <NextEvents/>
       <b-row>
         <b-col md="5" sm="12" class="mt-5 component-bg mx-auto p-3 shadow rounded">
@@ -88,21 +88,6 @@ export default ({
               img: { blank: true, width: 75, height: 75, class: 'm1' }
             }
           ]
-        },
-        {
-          id: 1,
-          time: '18:00',
-          date: '18/05',
-          tasks: [
-            {
-              id: 0,
-              title: 'Biology Meeting',
-              label: 'Medium',
-              labelColor: '#ffe14d',
-              description: 'Notes: a report should be submitted on google classroom',
-              img: { blank: true, width: 75, height: 75, class: 'm1' }
-            }
-          ]
         }
       ]
     }
@@ -121,5 +106,8 @@ export default ({
       color: white;
       min-height:44vh;
       margin-bottom: 16px;
+  }
+  .margin-top {
+    margin-top: 8%;
   }
 </style>

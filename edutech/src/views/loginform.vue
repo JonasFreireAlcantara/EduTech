@@ -3,7 +3,7 @@
     <TopComponent :isLogged="false"/>
     <div class="login-div text-center">
       <h4>Para continuar, faça login com sua conta Google</h4>
-      <b-button :to="{ name: 'Dashboard' }" variant="primary">Fazer login com conta Google</b-button>
+      <b-button :to="{ name: 'Workspace' }" variant="primary">Fazer login com conta Google</b-button>
     </div>
   </div>
 </template>
