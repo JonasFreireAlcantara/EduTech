@@ -4,6 +4,7 @@ const Dashboard = () => import('../views/dashboard.vue')
 const Workspace = () => import('../views/workspace.vue')
 const Login = () => import('../views/login.vue')
 const Loginform = () => import('../views/loginform.vue')
+const WorkspaceList = () => import('../views/workspaceList.vue')
 
 const routes = [
   {
@@ -13,6 +14,11 @@ const routes = [
   },
   {
     path: '/workspace',
+    name: 'Workspace',
+    component: WorkspaceList
+  },
+  {
+    path: '/workspace/:id',
     name: 'Workspace',
     component: Workspace
   },

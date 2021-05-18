@@ -88,12 +88,12 @@ export default ({
     font-size: larger;
   }
   .nav-pills .nav-link.active.tab {
-    color: #FFD400;
+    color: #2E294E;
     background-color: white;
     font-weight: 600;
   }
   .nav-link:hover {
-    color: #FFD400;
+    color: #2E294E;
   }
   .nav-link.active::after {
     content: "";
@@ -102,6 +102,6 @@ export default ({
     height: 10px;
     border-bottom: 3px solid;
     margin: 0 auto;
-    color: #FFD400;
+    color: #2E294E;
   }
 </style>
