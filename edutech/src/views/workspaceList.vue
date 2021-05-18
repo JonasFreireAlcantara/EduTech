@@ -1,8 +1,6 @@
 <template>
   <div>
-    <top-menu @newdata="handleData($event)" />
-    <left-side-menu :drawer="leftSideMenuActive" @newdata="handleData($event)" />
-    <right-side-menu :drawer="rightSideMenuActive" @newdata="handleData($event)" />
+    <TopComponent :isLogged="true"/>
 
     <b-container class="component-bg">
       <b-row>
@@ -24,9 +22,7 @@
 </template>
 
 <script>
-import TopMenu from '../components/top-menu'
-import LeftSideMenu from '../components/left-side-menu'
-import RightSideMenu from '../components/right-side-menu'
+import TopComponent from '../components/top-component.vue'
 import Card from '../components/workspace-card'
 
 export default {
@@ -82,9 +78,7 @@ export default {
     }
   },
   components: {
-    TopMenu,
-    LeftSideMenu,
-    RightSideMenu,
+    TopComponent,
     Card
   },
   methods: {
