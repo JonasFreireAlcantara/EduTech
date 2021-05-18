@@ -1,19 +1,19 @@
 <template>
   <b-modal id="nextEvents" title="Próximos Eventos" size="xl" hide-footer header-class="text-dark" header-close-content="<h2>&times;</h2>" scrollable>
-    <b-tabs content-class="mt-3" nav-class="text-dark" pills>
+    <b-tabs content-class="mt-2" nav-class="text-dark" pills>
       <b-tab title="Hoje" title-link-class="tab" active>
         <div v-for="time in times" :key="time.id">
-          <Event :time="time" :hasMargin="index !== 0" :isExpanded="time.visible" :isTime="true" :isMinimized="false"></Event>
+          <Event :time="time" :hasMargin="index !== 0" :isTime="true" :isMinimized="false" accordion="1"></Event>
         </div>
       </b-tab>
       <b-tab title="Nessa Semana" title-link-class="tab">
         <div v-for="time in times" :key="time.id">
-          <Event :time="time" :hasMargin="index !== 0" :isExpanded="time.visible" :isTime="false" :isMinimized="false"></Event>
+          <Event :time="time" :hasMargin="index !== 0" :isTime="false" :isMinimized="false" accordion="2"></Event>
         </div>
       </b-tab>
       <b-tab title="Nesse Mês" title-link-class="tab">
         <div v-for="time in times" :key="time.id">
-          <Event :time="time" :hasMargin="index !== 0" :isExpanded="time.visible" :isTime="false" :isMinimized="false"></Event>
+          <Event :time="time" :hasMargin="index !== 0" :isTime="false" :isMinimized="false" accordion="3"></Event>
         </div>
       </b-tab>
     </b-tabs>
@@ -77,17 +77,23 @@ export default ({
 </script>
 
 <style>
+  @media (min-width: 1300px) {
+    .modal-xl {
+      max-width: 1270px;
+    }
+  }
   .tab {
     color: gray;
     background-color: white;
+    font-size: larger;
   }
   .nav-pills .nav-link.active.tab {
-    color: #212529;
+    color: #FFD400;
     background-color: white;
     font-weight: 600;
   }
   .nav-link:hover {
-    color: inherit;
+    color: #FFD400;
   }
   .nav-link.active::after {
     content: "";
@@ -96,6 +102,6 @@ export default ({
     height: 10px;
     border-bottom: 3px solid;
     margin: 0 auto;
-    color: #212529;
+    color: #FFD400;
   }
 </style>

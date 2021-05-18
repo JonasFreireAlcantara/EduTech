@@ -1,10 +1,10 @@
 <template>
-  <div role="tablist" :class="hasMargin ? 'mt-5' : ''">
+  <div role="tablist" :class="hasMargin ? 'mt-3' : ''">
     <b-row>
       <b-col :md="isMinimized? '12' :'10'" sm="12">
         <b-card no-body class="mb-1">
-          <b-card-header header-tag="header" class="pr-4 accordion" role="tab" style="max-height:60px;">
-            <b-button variant="warning" block :aria-expanded="isExpanded ? 'true' : 'false'" :aria-controls="'accordion-'+uuid" @click="isExpanded = !isExpanded" :class="isExpanded ? 'btn-icon text-dark' : 'btn-icon text-dark collapsed'" style="max-height:40px;">
+          <b-card-header header-tag="header" class="pr-4 accordion bg-light" role="tab" style="max-height:60px;">
+            <b-button variant="light" block :aria-expanded="isExpanded ? 'true' : 'false'" :aria-controls="'accordion-'+uuid" @click="isExpanded = !isExpanded" :class="isExpanded ? 'btn-icon text-dark' : 'btn-icon text-dark collapsed'" style="max-height:40px;">
               <b-row>
                 <b-col cols="11">
                   <h3 class="mb-0">{{isTime?time.time:time.date}}</h3>
@@ -17,7 +17,7 @@
               </b-row>
             </b-button>
           </b-card-header>
-          <b-collapse :id="'accordion-'+uuid" accordion="my-accordion" v-model="isExpanded" role="tabpanel" >
+          <b-collapse :id="'accordion-'+uuid" :accordion="'my-accordion-'+accordion" v-model="isExpanded" role="tabpanel" >
             <div v-for="(task,index) in time.tasks" :key="task.id">
               <b-card-body>
                 <b-row>
@@ -49,28 +49,21 @@ import { uuid } from 'vue-uuid'
 export default ({
   data () {
     return {
-      uuid: uuid.v1()
+      uuid: uuid.v1(),
+      isExpanded: true
     }
   },
   props: {
     time: Object,
     hasMargin: Boolean,
-    isExpanded: Boolean,
     isTime: Boolean,
+    accordion: String,
     isMinimized: Boolean
   }
 })
 </script>
 
-<style>
-.accordion {
-  background-color: #FFD400;
-}
-.btn-icon {
-  background: none;
-  border: none;
-  width: 100%;
-}
+<style scoped>
 .btn {
   text-align: left;
 }
@@ -82,5 +75,13 @@ export default ({
   padding: 5px 20px;
   margin-left: 1rem;
   border-radius: 15px;
+}
+</style>
+
+<style>
+.btn-icon {
+  background: none;
+  border: none;
+  width: 100%;
 }
 </style>

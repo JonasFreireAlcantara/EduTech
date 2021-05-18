@@ -1,7 +1,7 @@
 <template>
   <div>
     <Topbar/>
-    <div class="login-div">
+    <div class="login-div text-center">
       <h4>Para continuar, faça login com sua conta Google</h4>
       <b-button block @click="performLogin" variant="primary">Fazer login com conta Google</b-button>
     </div>
@@ -24,7 +24,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .login-div {
   margin: 15% 0 0;
   text-align: center;

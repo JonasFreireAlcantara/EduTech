@@ -15,7 +15,7 @@
         </b-row>
         <b-row class="mt-4">
           <div v-for="(time, index) in times" :key="time.id">
-            <Event :time="time" :hasMargin="index !== 0" :isExpanded="index === 0" :isTime="true" :isMinimized="true"></Event>
+            <Event :time="time" :hasMargin="index !== 0" :isTime="true" :isMinimized="true" accordion="0"></Event>
           </div>
         </b-row>
       </b-col>
