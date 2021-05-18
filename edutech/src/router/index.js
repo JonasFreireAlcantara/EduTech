@@ -1,6 +1,9 @@
 import VueRouter from 'vue-router'
 
 const Dashboard = () => import('../views/dashboard.vue')
+const Workspace = () => import('../views/workspace.vue')
+const Login = () => import('../views/login.vue')
+const Loginform = () => import('../views/loginform.vue')
 
 const routes = [
   {
@@ -9,8 +12,23 @@ const routes = [
     component: Dashboard
   },
   {
+    path: '/workspace',
+    name: 'Workspace',
+    component: Workspace
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/performlogin',
+    name: 'PerformLogin',
+    component: Loginform
+  },
+  {
     path: '/:pathMatch(.*)*',
-    redirect: { name: 'Dashboard' }
+    redirect: { name: 'Login' }
   }
 ]
 
