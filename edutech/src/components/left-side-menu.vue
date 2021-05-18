@@ -1,0 +1,75 @@
+<template>
+  <v-navigation-drawer
+  v-model="drawerOpen"
+  absolute
+  bottom
+  temporary
+  >
+    <v-list
+      nav
+      dense
+    >
+      <v-list-item-group
+        v-model="group"
+        active-class="deep-purple--text text--accent-4"
+      >
+        <h2>Workspaces</h2>
+
+        <div class="h-line"></div>
+
+        <v-list-item>
+          <v-list-item-title>Workspace 1</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item>
+          <v-list-item-title>Workspace 2</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item>
+          <v-list-item-title>Workspace 3</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item>
+          <v-list-item-title>Workspace 4</v-list-item-title>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
+  </v-navigation-drawer>
+</template>
+
+<script>
+export default {
+  props: {
+    drawer: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data: () => {
+    return {
+      drawerOpen: false,
+      group: null
+    }
+  },
+  updated: function () {
+    this.$emit('newdata', [this.drawerOpen, false])
+  },
+  watch: {
+    drawer: function (newVal) {
+      this.drawerOpen = newVal
+    },
+    group: function () {
+      this.drawerOpen = false
+    }
+  }
+}
+</script>
+
+<style scoped>
+  .h-line {
+    height: 1px;
+    width: 100%;
+    display: inline-block;
+    border-bottom: 1px solid rgb(211, 211, 211);
+  }
+</style>

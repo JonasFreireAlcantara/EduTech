@@ -1,5 +1,9 @@
 <template>
   <div>
+    <top-menu @newdata="handleData($event)" />
+    <left-side-menu :drawer="leftSideMenuActive" @newdata="handleData($event)" />
+    <right-side-menu :drawer="rightSideMenuActive" @newdata="handleData($event)" />
+
     <v-row class="filter">
       <v-col>
         <strong >Workspace</strong>
@@ -128,13 +132,31 @@
 </template>
 
 <script>
+import TopMenu from '../components/top-menu'
+import LeftSideMenu from '../components/left-side-menu'
+import RightSideMenu from '../components/right-side-menu'
+
 export default {
+  components: {
+    TopMenu,
+    LeftSideMenu,
+    RightSideMenu
+  },
+
+  methods: {
+    handleData: function (e) {
+      [this.leftSideMenuActive, this.rightSideMenuActive] = e
+    }
+  },
+
   data: () => {
     return {
       initialDate: new Date().toISOString().substr(0, 10),
       endDate: new Date().toISOString().substr(0, 10),
       menu: false,
       menu2: false,
+      leftSideMenuActive: false,
+      rightSideMenuActive: false,
       workspaces: ['workspace 1', 'workspace 2', 'workspace 3'],
       progress: 70,
       alignCenter: 'center',
@@ -158,6 +180,7 @@ export default {
 
 <style scoped>
   .filter {
+    padding-top: 70px;
     width: 80%;
     margin: 0 auto;
   }
