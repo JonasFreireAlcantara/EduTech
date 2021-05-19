@@ -1,7 +1,6 @@
 <template>
   <div>
     <TopComponent :isLogged="true"/>
-
     <b-container class="component-bg">
       <b-row>
         <b-col>
@@ -18,7 +17,6 @@
       </b-row>
     </b-container>
   </div>
-
 </template>
 
 <script>
@@ -28,63 +26,12 @@ import Card from '../components/workspace-card'
 export default {
   data () {
     return {
-      workspaces: [
-        {
-          id: 0,
-          name: 'Matemática',
-          description: 'Estudo pessoal de equações de 2º grau e geometria euclidiana',
-          icon: { blank: true, width: 70, height: 70, class: 'm1' },
-          tasks: [],
-          pomodoros: [],
-          columns: []
-        },
-        {
-          id: 1,
-          name: 'Matemática',
-          description: 'Estudo pessoal de equações de 2º grau e geometria euclidiana',
-          icon: { blank: true, width: 70, height: 70, class: 'm1' },
-          tasks: [],
-          pomodoros: [],
-          columns: []
-        },
-        {
-          id: 2,
-          name: 'Matemática',
-          description: 'Estudo pessoal de equações de 2º grau e geometria euclidiana',
-          icon: { blank: true, width: 70, height: 70, class: 'm1' },
-          tasks: [],
-          pomodoros: [],
-          columns: []
-        },
-        {
-          id: 3,
-          name: 'Matemática',
-          description: 'Estudo pessoal de equações de 2º grau e geometria euclidiana',
-          icon: { blank: true, width: 70, height: 70, class: 'm1' },
-          tasks: [],
-          pomodoros: [],
-          columns: []
-        },
-        {
-          id: 4,
-          name: 'Matemática',
-          description: 'Estudo pessoal de equações de 2º grau e geometria euclidiana',
-          icon: { blank: true, width: 70, height: 70, class: 'm1' },
-          tasks: [],
-          pomodoros: [],
-          columns: []
-        }
-      ]
+      workspaces: this.$store.state.workspaces
     }
   },
   components: {
     TopComponent,
     Card
-  },
-  methods: {
-    handleData: function (e) {
-      [this.leftSideMenuActive, this.rightSideMenuActive] = e
-    }
   }
 }
 </script>

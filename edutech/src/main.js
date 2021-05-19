@@ -6,6 +6,7 @@ import VueRouter from 'vue-router'
 import VueApexCharts from 'vue-apexcharts'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import UUID from 'vue-uuid'
+import store from './store'
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
@@ -23,6 +24,7 @@ Vue.component('apexchart', VueApexCharts)
 Vue.config.productionTip = false
 
 new Vue({
+  store,
   router,
   vuetify,
   render: h => h(App)

@@ -17,20 +17,8 @@
 
         <div class="h-line"></div>
 
-        <v-list-item>
-          <v-list-item-title>Workspace 1</v-list-item-title>
-        </v-list-item>
-
-        <v-list-item>
-          <v-list-item-title>Workspace 2</v-list-item-title>
-        </v-list-item>
-
-        <v-list-item>
-          <v-list-item-title>Workspace 3</v-list-item-title>
-        </v-list-item>
-
-        <v-list-item>
-          <v-list-item-title>Workspace 4</v-list-item-title>
+        <v-list-item v-for="workspace in workspaces" :key="workspace.id">
+          <v-list-item-title @click="openWorkspace(workspace.id)">{{workspace.name}}</v-list-item-title>
         </v-list-item>
       </v-list-item-group>
     </v-list>
@@ -45,10 +33,11 @@ export default {
       default: false
     }
   },
-  data: () => {
+  data () {
     return {
       drawerOpen: false,
-      group: null
+      group: null,
+      workspaces: this.$store.state.workspaces
     }
   },
   updated: function () {
@@ -61,6 +50,13 @@ export default {
     group: function () {
       this.drawerOpen = false
     }
+  },
+  methods: {
+    openWorkspace: function (id) {
+      if (this.$route.path !== '/workspace/' + id) {
+        this.$router.push({ path: '/workspace/' + id })
+      }
+    }
   }
 }
 </script>
@@ -71,5 +67,10 @@ export default {
     width: 100%;
     display: inline-block;
     border-bottom: 1px solid rgb(211, 211, 211);
+  }
+
+  h2 {
+    text-align: center;
+    margin: 8px 0 0;
   }
 </style>
