@@ -3,7 +3,12 @@
     <TopComponent :isLogged="false"/>
     <div class="login-div text-center">
       <h4>Para continuar, faça login com sua conta Google</h4>
-      <b-button :to="{ name: 'Workspace' }" variant="primary">Fazer login com conta Google</b-button>
+      <v-btn :loading="loading3" :disabled="loading3" color="primary" class="ma-2 white--text" :to="{ name: 'Workspace' }" @click="loader = 'loading3'">
+        <v-icon left>
+          mdi-google
+        </v-icon>
+        Fazer login com conta Google
+      </v-btn>
     </div>
   </div>
 </template>

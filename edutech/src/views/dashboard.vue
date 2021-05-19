@@ -6,7 +6,7 @@
         <strong>Workspace</strong>
         <v-select
           class="mt-2"
-          :items="workspaces"
+          :items="getWorkspaceNames"
           v-model="actualWorkspace"
           label="Selecione um workspace"
           solo
@@ -87,7 +87,7 @@
 
     <b-row class="workspace-info" >
       <b-col class="progress-bar" md="8">
-        <strong v-if="actualWorkspace !== null">Progresso do {{actualWorkspace}}</strong>
+        <strong v-if="actualWorkspace !== null">Progresso do Workspace: {{actualWorkspace}}</strong>
         <strong v-else>_</strong>
         <v-progress-linear
           class="mt-2"
@@ -146,7 +146,7 @@ export default {
       [this.leftSideMenuActive, this.rightSideMenuActive] = e
     }
   },
-  data: () => {
+  data () {
     return {
       initialDate: new Date().toISOString().substr(0, 10),
       endDate: new Date().toISOString().substr(0, 10),
@@ -154,7 +154,6 @@ export default {
       menu2: false,
       leftSideMenuActive: false,
       rightSideMenuActive: false,
-      workspaces: ['workspace 1', 'workspace 2', 'workspace 3'],
       progress: 70,
       actualWorkspace: null,
       alignCenter: 'center',
@@ -177,6 +176,15 @@ export default {
           data: [4.2, 3.6]
         }
       ]
+    }
+  },
+  computed: {
+    getWorkspaceNames: function () {
+      var workList = []
+      this.$store.state.workspaces.forEach(element => {
+        workList.push(element.name)
+      })
+      return workList
     }
   }
 }

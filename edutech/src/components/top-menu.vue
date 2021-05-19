@@ -10,7 +10,7 @@
       <v-spacer></v-spacer>
       <v-col>
         <v-toolbar-title :align="`center`">
-          <router-link :to="isLogged ? { name: 'Dashboard' } : { name: 'Login' }">
+          <router-link :to="isLogged ? { name: 'Workspace' } : { name: 'Login' }">
             <span class="logo">EduTech</span>
           </router-link>
         </v-toolbar-title>
@@ -18,8 +18,8 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon v-if="isLogged" :to="{ name: 'Dashboard' }">
-        <v-icon color="#FFF">mdi-view-dashboard-outline</v-icon>
+      <v-btn icon v-if="isLogged" :to="{ name: $route.name === 'Dashboard' ? 'Workspace' : 'Dashboard' }">
+        <v-icon color="#FFF">{{$route.name === 'Dashboard' ? 'mdi-monitor-multiple' : 'mdi-view-dashboard-outline'}}</v-icon>
       </v-btn>
       <v-btn elevation="2" v-else :to="{ name: 'PerformLogin' }" :hidden="$route.name === 'PerformLogin'">Login</v-btn>
 
