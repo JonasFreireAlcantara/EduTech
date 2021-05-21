@@ -24,4 +24,9 @@ export default {
   .v-progress-linear__background {
     opacity: 0.75 !important;
   }
+
+  .text-transform-none {
+    text-transform: none !important;
+  }
+  
 </style>
