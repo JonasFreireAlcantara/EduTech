@@ -178,6 +178,10 @@ export default {
       ]
     }
   },
+  created: function () {
+    const workspaces = this.getWorkspaceNames
+    this.actualWorkspace = workspaces.length > 0 ? workspaces[0] : null
+  },
   computed: {
     getWorkspaceNames: function () {
       var workList = []
