@@ -21,7 +21,7 @@
       <v-btn icon v-if="isLogged" :to="{ name: $route.name === 'Dashboard' ? 'Workspace' : 'Dashboard' }">
         <v-icon color="#FFF">{{$route.name === 'Dashboard' ? 'mdi-monitor-multiple' : 'mdi-view-dashboard-outline'}}</v-icon>
       </v-btn>
-      <v-btn elevation="2" v-else :to="{ name: 'PerformLogin' }" :hidden="$route.name === 'PerformLogin'">Login</v-btn>
+      <v-btn elevation="2" v-else :to="{ name: 'PerformLogin' }" :hidden="$route.name === 'PerformLogin'" class="text-capitalize">Login</v-btn>
 
       <v-btn v-if="isLogged" icon @click="sendData(false, true)">
         <v-icon x-large color="#FFF" >

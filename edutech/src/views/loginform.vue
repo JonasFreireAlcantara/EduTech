@@ -2,8 +2,11 @@
   <div>
     <TopComponent :isLogged="false"/>
     <div class="login-div text-center">
-      <h4>Para continuar, faça login com sua conta Google</h4>
-      <v-btn color="primary" class="ma-2 white--text" :to="{ name: 'Workspace' }" @click="loader = 'loading3'">
+      <div class="login-label">
+        <b-img :src="googleBrand" height="40"></b-img>
+        <h4>Para continuar, faça login com sua conta Google</h4>
+      </div>
+      <v-btn color="primary" class="text-transform-none ma-2 white--text" :to="{ name: 'Workspace' }" @click="loader = 'loading3'">
         <v-icon left>
           mdi-google
         </v-icon>
@@ -17,6 +20,12 @@
 import TopComponent from '../components/top-component.vue'
 
 export default {
+  data () {
+    return {
+      googleBrand: require('@/assets/google_G_brand.png')
+    }
+  },
+
   components: {
     TopComponent
   }
@@ -27,6 +36,18 @@ export default {
 .login-div {
   margin: 15% 0 0;
   text-align: center;
+}
+
+.login-label {
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-label h4 {
+  margin: 0 0 0 10px;
 }
 
 button {
