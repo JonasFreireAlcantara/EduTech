@@ -60,9 +60,12 @@ export default {
     }
   },
   created: function () {
-    const auth = gapi.auth2.init()
-    if (auth.isSignedIn.get()) {
-      this.userName = auth.currentUser.get().getBasicProfile().Ue
+    if (gapi.auth2) {
+      const auth = gapi.auth2.init()
+      if (auth.isSignedIn.get()) {
+        this.userIcon = auth.currentUser.get().getBasicProfile().uK
+        this.userName = auth.currentUser.get().getBasicProfile().Ue
+      }
     }
   }
 }
