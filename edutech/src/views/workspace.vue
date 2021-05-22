@@ -2,6 +2,7 @@
   <div>
     <TopComponent :isLogged="true"/>
     <b-container fluid class="margin-top">
+      <h1>{{getWorkspaceName}}</h1>
       <NextEvents/>
       <PomodoroModal/>
       <b-row>
@@ -104,6 +105,11 @@ export default ({
     Event,
     PomodoroModal,
     TopComponent
+  },
+  computed: {
+    getWorkspaceName: function () {
+      return this.$store.state.workspaces[this.$router.history.current.params.id].name
+    }
   }
 })
 </script>

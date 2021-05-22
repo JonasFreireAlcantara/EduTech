@@ -7,6 +7,7 @@ import VueApexCharts from 'vue-apexcharts'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import UUID from 'vue-uuid'
 import store from './store'
+import GoogleLogin from 'vue-google-login'
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
@@ -15,6 +16,10 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
+
+Vue.use(GoogleLogin, {
+  client_id: '621647520574-lm9unrl07tf1rphcs0pr5i399jtp14l1.apps.googleusercontent.com'
+})
 
 Vue.use(UUID)
 

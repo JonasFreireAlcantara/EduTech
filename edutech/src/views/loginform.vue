@@ -3,31 +3,49 @@
     <TopComponent :isLogged="false"/>
     <div class="login-div text-center">
       <div class="login-label">
-        <b-img :src="googleBrand" height="40"></b-img>
+        
         <h4>Para continuar, faça login com sua conta Google</h4>
       </div>
-      <v-btn color="primary" class="text-transform-none ma-2 white--text" :to="{ name: 'Workspace' }" @click="loader = 'loading3'">
-        <v-icon left>
-          mdi-google
-        </v-icon>
-        Fazer login com conta Google
-      </v-btn>
+      <GoogleLogin style="display: flex; justify-content: center;" :params="params" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure"/>
     </div>
   </div>
 </template>
 
 <script>
 import TopComponent from '../components/top-component.vue'
+import GoogleLogin from 'vue-google-login'
 
 export default {
   data () {
     return {
-      googleBrand: require('@/assets/google_G_brand.png')
+      googleBrand: require('@/assets/google_G_brand.png'),
+      params: {
+        client_id: '621647520574-lm9unrl07tf1rphcs0pr5i399jtp14l1.apps.googleusercontent.com'
+      },
+      renderParams: {
+        scope: 'email',
+        width: 250,
+        height: 50,
+        longtitle: true
+      }
     }
   },
-
   components: {
-    TopComponent
+    TopComponent,
+    GoogleLogin
+  },
+  methods: {
+    onSuccess (googleUser) {
+      console.log('On success')
+      console.log(googleUser)
+      // This only gets the user information: id, name, imageUrl and email
+      console.log(googleUser.getBasicProfile())
+      this.$router.push({ name: 'Workspace' })
+    },
+    onFailure (failure) {
+      console.log(failure.error)
+      console.log(failure)
+    }
   }
 }
 </script>
