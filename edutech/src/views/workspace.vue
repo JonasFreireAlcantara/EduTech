@@ -4,6 +4,7 @@
     <b-container fluid class="margin-top">
       <NextEvents/>
       <PomodoroModal/>
+      <KanbanModal/>
       <b-row>
         <b-col md="5" sm="12" class="mt-5 component-bg mx-auto p-3 shadow rounded">
           <b-row>
@@ -39,7 +40,7 @@
               <h2>Quadro</h2>
             </b-col>
             <b-col cols="2" class="text-center">
-              <a><h2><b-icon icon="arrows-angle-expand"></b-icon></h2></a>
+              <a v-b-modal.kanbanModal><h2><b-icon icon="arrows-angle-expand"></b-icon></h2></a>
             </b-col>
           </b-row>
         </b-col>
@@ -66,6 +67,7 @@
 <script>
 import NextEvents from './nextEvents.vue'
 import Event from './event.vue'
+import KanbanModal from './kanbanModal'
 import PomodoroModal from './pomodoroModal'
 import TopComponent from '../components/top-component.vue'
 
@@ -102,6 +104,7 @@ export default ({
   components: {
     NextEvents,
     Event,
+    KanbanModal,
     PomodoroModal,
     TopComponent
   }
