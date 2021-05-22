@@ -24,17 +24,24 @@
       <v-btn elevation="2" v-else :to="{ name: 'PerformLogin' }" :hidden="$route.name === 'PerformLogin'" class="text-capitalize">Login</v-btn>
 
       <v-btn v-if="isLogged" icon @click="sendData(false, true)">
-        <v-icon x-large color="#FFF" >
+        <v-icon v-if="!userIcon" x-large color="#FFF" >
           mdi-account-circle-outline
         </v-icon>
+        <v-avatar v-else>
+          <img :src="userIcon" :alt="userName">
+        </v-avatar>
       </v-btn>
     </v-app-bar>
 </template>
 
+<script src="https://apis.google.com/js/platform.js"></script>
+
 <script>
 export default {
   data: () => ({
-    group: null
+    group: null,
+    userIcon: null,
+    userName: null
   }),
   props: {
     isLogged: Boolean
@@ -42,6 +49,13 @@ export default {
   methods: {
     sendData: function (work, profile) {
       this.$emit('newdata', [work, profile])
+    }
+  },
+  created: function () {
+    const auth = gapi.auth2.init()
+    if (auth.isSignedIn.get()) {
+      this.userIcon = auth.currentUser.get().getBasicProfile().uK
+      this.userName = auth.currentUser.get().getBasicProfile().Ue
     }
   }
 }

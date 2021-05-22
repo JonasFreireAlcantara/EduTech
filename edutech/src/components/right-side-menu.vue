@@ -14,7 +14,7 @@
         v-model="group"
         active-class="deep-purple--text text--accent-4"
       >
-        <h2>Usuário</h2>
+        <h2>{{userName ? userName : 'Usuário'}}</h2>
 
         <div class="h-line"></div>
 
@@ -31,6 +31,8 @@
   </v-navigation-drawer>
 </template>
 
+<script src="https://apis.google.com/js/platform.js"></script>
+
 <script>
 export default {
   props: {
@@ -42,7 +44,8 @@ export default {
   data: () => {
     return {
       drawerOpen: false,
-      group: null
+      group: null,
+      userName: null
     }
   },
   updated: function () {
@@ -54,6 +57,12 @@ export default {
     },
     group: function () {
       this.drawerOpen = false
+    }
+  },
+  created: function () {
+    const auth = gapi.auth2.init()
+    if (auth.isSignedIn.get()) {
+      this.userName = auth.currentUser.get().getBasicProfile().Ue
     }
   }
 }
