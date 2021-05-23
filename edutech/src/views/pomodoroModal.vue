@@ -3,7 +3,7 @@
     <b-tabs content-class="mt-2" nav-class="text-dark" pills fill>
       <b-tab title="Pomodoro" title-link-class="tab" active>
         <Pomodoro
-          :minutes=2
+          :minutes=25
         />
       </b-tab>
 
