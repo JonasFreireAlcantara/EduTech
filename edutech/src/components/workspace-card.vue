@@ -1,6 +1,5 @@
 <template>
   <b-card
-    style="max-width: 23rem;"
     class="mb-5 mr-4 shadow-sm"
   >
     <a :href="'/#/workspace/'+workspace.id">
@@ -11,7 +10,7 @@
             <b-img v-else src="https://wtctravelservices.com/public/uploads/service-6.jpg" alt="Study image" width="70" height="70" rounded="circle" class="m1"></b-img>
           </b-col>
           <b-col cols="8">
-            <h3 class="mb-0">{{workspace.name}}</h3>
+            <h4 class="mb-0">{{workspace.name}}</h4>
             <p>{{workspace.description}}</p>
           </b-col>
         </b-row>

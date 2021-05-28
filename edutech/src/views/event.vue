@@ -31,7 +31,7 @@
                     <b-card-text class="text-dark">{{task.description}}</b-card-text>
                   </b-col>
                   <b-col md="4" sm="12" class="text-center" v-if="!isMinimized">
-                    <b-button variant="outline-primary">+ ADD TO CALENDAR</b-button>
+                    <b-button variant="outline-info">+ ADD TO CALENDAR</b-button>
                   </b-col>
                 </b-row>
               </b-card-body>

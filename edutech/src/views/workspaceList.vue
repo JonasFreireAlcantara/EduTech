@@ -8,11 +8,9 @@
           <hr>
         </b-col>
       </b-row>
-      <b-row>
-        <b-col>
-          <b-card-group deck>
-            <Card v-for="workspace in workspaces" :key="workspace.id" :workspace="workspace"></Card>
-          </b-card-group>
+      <b-row cols="1" cols-md="3">
+        <b-col v-for="workspace in workspaces" :key="workspace.id" >
+          <Card :workspace="workspace"/>
         </b-col>
       </b-row>
     </b-container>
@@ -37,9 +35,14 @@ export default {
 </script>
 
 <style scoped>
+  @media (min-width: 768px) {
+    .row-cols-md-3 > * {
+      flex: 0 0 33.3333333333%!important;
+    }
+  }
   .component-bg {
     margin-bottom: 12px;
-    margin-top: 10%;
+    margin-top: 8%;
   }
   .card-deck {
     display: -ms-flexbox;

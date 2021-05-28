@@ -1,63 +1,74 @@
 <template>
   <div>
     <TopComponent :isLogged="true"/>
-    <b-container fluid class="margin-top">
+    <b-container class="margin-top">
       <h1>{{getWorkspaceName}}</h1>
       <NextEvents/>
       <PomodoroModal/>
       <KanbanModal/>
+      <CalendarModal/>
       <b-row>
-        <b-col md="5" sm="12" class="mt-5 component-bg mx-auto p-3 shadow rounded">
-          <b-row>
-            <b-col cols="10">
-              <h2>Próximos Eventos</h2>
-            </b-col>
-            <b-col cols="2" class="text-center">
-              <a v-b-modal.nextEvents><h2><b-icon icon="arrows-angle-expand"></b-icon></h2></a>
-            </b-col>
-          </b-row>
-          <b-row class="mt-4">
-            <div v-for="(time, index) in times" :key="time.id">
-              <Event :time="time" :hasMargin="index !== 0" :isTime="true" :isMinimized="true" accordion="0"></Event>
-            </div>
-          </b-row>
+        <b-col md="6" sm="12">
+          <div class="component-bg p-3 shadow rounded h-100">
+            <b-row>
+              <b-col cols="10">
+                <h2>Próximos Eventos</h2>
+              </b-col>
+              <b-col cols="2" class="text-center">
+                <a v-b-modal.nextEvents><h2><b-icon icon="arrows-angle-expand"></b-icon></h2></a>
+              </b-col>
+            </b-row>
+            <b-row class="mt-4 mx-auto">
+              <div v-for="(time, index) in times" :key="time.id" class="w-100">
+                <Event :time="time" :hasMargin="index !== 0" :isTime="true" :isMinimized="true" accordion="0"></Event>
+              </div>
+            </b-row>
+          </div>
         </b-col>
-        <b-col md="5" sm="12" class="mt-5 component-bg mx-auto p-3 shadow rounded">
-          <b-row>
-            <b-col cols="10">
-              <h2>Calendário</h2>
-            </b-col>
-            <b-col cols="2" class="text-center">
-              <a><h2><b-icon icon="arrows-angle-expand"></b-icon></h2></a>
-            </b-col>
-          </b-row>
+        <b-col md="6" sm="12">
+          <div class="component-bg p-3 shadow rounded h-100">
+            <b-row>
+              <b-col cols="10">
+                <h2>Calendário</h2>
+              </b-col>
+              <b-col cols="2" class="text-center">
+                <a v-b-modal.calendarModal><h2><b-icon icon="arrows-angle-expand"></b-icon></h2></a>
+              </b-col>
+            </b-row>
+          </div>
         </b-col>
       </b-row>
 
       <b-row>
-        <b-col md="5" sm="12" class="mt-5 component-bg mx-auto p-3 shadow rounded">
-          <b-row>
-            <b-col cols="10">
-              <h2>Quadro</h2>
-            </b-col>
-            <b-col cols="2" class="text-center">
-              <a v-b-modal.kanbanModal><h2><b-icon icon="arrows-angle-expand"></b-icon></h2></a>
-            </b-col>
-          </b-row>
+        <b-col md="6" sm="12" class="mt-5">
+          <div class="component-bg p-3 shadow rounded h-100">
+            <b-row>
+              <b-col cols="10">
+                <h2>Quadro</h2>
+              </b-col>
+              <b-col cols="2" class="text-center">
+                <a v-b-modal.kanbanModal><h2><b-icon icon="arrows-angle-expand"></b-icon></h2></a>
+              </b-col>
+            </b-row>
+          </div>
         </b-col>
 
-        <b-col md="5" sm="12" class="mt-5 component-bg mx-auto p-3 shadow rounded">
-          <b-row>
-            <b-col cols="10">
-              <h2>Tempo</h2>
-            </b-col>
-            <b-col cols="2" class="text-center">
-              <a v-b-modal.pomodoroModal><h2><b-icon icon="arrows-angle-expand"></b-icon></h2></a>
-            </b-col>
-          </b-row>
-          <b-row class="mt-4">
-            <h4>Implemented modal</h4>
-          </b-row>
+        <b-col md="6" sm="12" class="mt-5">
+          <div class="component-bg p-3 shadow rounded h-100">
+            <b-row>
+              <b-col cols="10">
+                <h2>Tempo</h2>
+              </b-col>
+              <b-col cols="2" class="text-center">
+                <a v-b-modal.pomodoroModal><h2><b-icon icon="arrows-angle-expand"></b-icon></h2></a>
+              </b-col>
+            </b-row>
+            <b-row class="mt-4">
+              <b-col>
+                <h4>Implemented modal</h4>
+              </b-col>
+            </b-row>
+          </div>
         </b-col>
 
       </b-row>
@@ -70,6 +81,7 @@ import NextEvents from './nextEvents.vue'
 import Event from './event.vue'
 import KanbanModal from './kanbanModal'
 import PomodoroModal from './pomodoroModal'
+import CalendarModal from './calendarModal'
 import TopComponent from '../components/top-component.vue'
 
 export default ({
@@ -107,6 +119,7 @@ export default ({
     Event,
     KanbanModal,
     PomodoroModal,
+    CalendarModal,
     TopComponent
   },
   computed: {

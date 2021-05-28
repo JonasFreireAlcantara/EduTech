@@ -9,9 +9,8 @@ import UUID from 'vue-uuid'
 import store from './store'
 import GoogleLogin from 'vue-google-login'
 
-// Import Bootstrap an BootstrapVue CSS files (order is important)
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import './app.scss'
+
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin

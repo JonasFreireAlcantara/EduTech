@@ -77,9 +77,9 @@ export default ({
 </script>
 
 <style>
-  @media (min-width: 1300px) {
+  @media (min-width: 1270px) {
     .modal-xl {
-      max-width: 1270px;
+      max-width: 80%;
     }
   }
   .tab {

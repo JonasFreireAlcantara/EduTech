@@ -28,5 +28,8 @@ export default {
   .text-transform-none {
     text-transform: none !important;
   }
+  .btn-light:hover {
+    background-color: inherit!important;
+  }
   
 </style>
