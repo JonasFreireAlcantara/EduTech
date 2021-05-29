@@ -3,6 +3,7 @@
     <TopComponent :isLogged="true"/>
     <b-container class="margin-top">
       <h1>{{getWorkspaceName}}</h1>
+      <hr>
       <NextEvents/>
       <PomodoroModal/>
       <KanbanModal/>
@@ -33,6 +34,11 @@
               </b-col>
               <b-col cols="2" class="text-center">
                 <a v-b-modal.calendarModal><h2><b-icon icon="arrows-angle-expand"></b-icon></h2></a>
+              </b-col>
+            </b-row>
+            <b-row class="mt-4 mx-auto">
+              <b-col class="p-0">
+                <Calendar :isMinimized="true"/>
               </b-col>
             </b-row>
           </div>
@@ -82,6 +88,7 @@ import Event from './event.vue'
 import KanbanModal from './kanbanModal'
 import PomodoroModal from './pomodoroModal'
 import CalendarModal from './calendarModal'
+import Calendar from '../components/calendar/calendar.vue'
 import TopComponent from '../components/top-component.vue'
 
 export default ({
@@ -120,6 +127,7 @@ export default ({
     KanbanModal,
     PomodoroModal,
     CalendarModal,
+    Calendar,
     TopComponent
   },
   computed: {
@@ -132,8 +140,7 @@ export default ({
 
 <style scoped>
   .component-bg {
-      background-color: #541388;
-      color: white;
+      background-color: #c6aed8;
       min-height:44vh;
       margin-bottom: 16px;
   }

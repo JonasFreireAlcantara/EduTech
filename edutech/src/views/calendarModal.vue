@@ -1,6 +1,6 @@
 <template>
   <b-modal id="calendarModal" title="Calendário" size="xl" hide-footer header-class="text-dark" header-close-content="<h2>&times;</h2>" scrollable>
-    <Calendar/>
+    <Calendar :isMinimized="false"/>
   </b-modal>
 </template>
 

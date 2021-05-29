@@ -31,5 +31,9 @@ export default {
   .btn-light:hover {
     background-color: inherit!important;
   }
-  
+  @media (min-width: 1270px) {
+    .modal-xl {
+      max-width: 95%!important;
+    }
+  }
 </style>

@@ -17,9 +17,4 @@ export default ({
 </script>
 
 <style>
-  @media (min-width: 1300px) {
-    .modal-xl {
-      max-width: 1270px;
-    }
-  }
 </style>
