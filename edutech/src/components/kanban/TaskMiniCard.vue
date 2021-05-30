@@ -20,10 +20,8 @@
 </template>
 
 <script>
-// import Badge from './Badge.vue'
 export default {
   components: {
-    // Badge
   },
   props: {
     task: {
