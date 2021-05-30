@@ -19,7 +19,7 @@
                 <a v-b-modal.nextEvents><h2><b-icon icon="arrows-angle-expand"></b-icon></h2></a>
               </b-col>
             </b-row>
-            <b-row class="mt-4 mx-auto">
+            <b-row class="mt-2 mx-auto">
               <div v-for="(time, index) in times" :key="time.id" class="w-100">
                 <Event :time="time" :hasMargin="index !== 0" :isTime="true" :isMinimized="true" accordion="0"></Event>
               </div>
@@ -36,7 +36,7 @@
                 <a v-b-modal.calendarModal><h2><b-icon icon="arrows-angle-expand"></b-icon></h2></a>
               </b-col>
             </b-row>
-            <b-row class="mt-4 mx-auto">
+            <b-row class="mt-2 mx-auto">
               <b-col class="p-0">
                 <Calendar :isMinimized="true"/>
               </b-col>
@@ -69,7 +69,7 @@
                 <a v-b-modal.pomodoroModal><h2><b-icon icon="arrows-angle-expand"></b-icon></h2></a>
               </b-col>
             </b-row>
-            <b-row class="mt-4">
+            <b-row class="mt-2">
               <b-col>
                 <h4>Implemented modal</h4>
               </b-col>
@@ -141,7 +141,7 @@ export default ({
 <style scoped>
   .component-bg {
       background-color: #c6aed8;
-      min-height:44vh;
+      min-height:420px;
       margin-bottom: 16px;
   }
   .margin-top {
