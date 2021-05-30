@@ -50,18 +50,24 @@ export default {
             {
               id: 1,
               title: 'Add discount code to checkout page',
-              date: 'Sep 14',
+              description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Nam vehicula ipsum non tellus porttitor finibus. Mauris pharetra dictum urna eget fermentum. Suspendisse et purus massa. Nunc varius iaculis magna, at lacinia neque mattis ac. Proin aliquet est eu sagittis rhoncus. In hendrerit augue eu erat luctus congue. Phasellus a velit vitae risus convallis egestas sed sed nulla. Vestibulum ut quam fermentum, aliquet augue eu, hendrerit ex. Fusce et odio id eros commodo ultricies. Proin vestibulum dapibus vestibulum. Integer vehicula consequat urna, in scelerisque nunc porttitor eget. Aenean efficitur mauris in dictum rutrum. Nullam dictum ultrices pulvinar. Donec efficitur nulla tellus, a aliquet ligula scelerisque id. Quisque non porta velit, non laoreet nunc. Nunc et elit sed magna condimentum ultrices.',
+              resume: 'This is the most possible simple resume than ever.',
+              startDate: 'Sep 14',
+              endDate: 'Dec 12',
               type: 'Feature Request'
             },
             {
               id: 2,
               title: 'Provide documentation on integrations',
-              date: 'Sep 12'
+              description: 'Curabitur ac enim viverra, ultrices mi in, rhoncus libero. Nam lacinia sem ut nisl posuere malesuada. Etiam vitae leo dignissim, fringilla velit vitae, egestas dui. In ullamcorper volutpat massa, id pellentesque sapien tincidunt nec. Maecenas nec commodo sapien. Sed suscipit nisl quis tortor luctus fringilla. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla facilisi. Nullam imperdiet feugiat nisl sed pretium. Suspendisse laoreet tristique sem vitae mattis.',
+              startDate: 'Sep 12',
+              endDate: 'Oct 12'
             },
             {
               id: 3,
               title: 'Design shopping cart dropdown',
-              date: 'Sep 9',
+              startDate: 'May 9',
+              endDate: 'Jul 12',
               type: 'Design'
             }
           ]
@@ -72,13 +78,15 @@ export default {
             {
               id: 6,
               title: 'Design shopping cart dropdown',
-              date: 'Sep 9',
+              startDate: 'Nov 9',
+              endDate: 'Dec 1',
               type: 'Design'
             },
             {
               id: 7,
               title: 'Add discount code to checkout page',
-              date: 'Sep 14',
+              startDate: 'Feb 14',
+              endDate: 'Mar 10',
               type: 'Feature Request'
             }
           ]
@@ -89,13 +97,15 @@ export default {
             {
               id: 14,
               title: 'Add discount code to checkout page',
-              date: 'Sep 14',
+              startDate: 'Jul 14',
+              endDate: 'Sep 12',
               type: 'Feature Request'
             },
             {
               id: 15,
               title: 'Design shopping cart dropdown',
-              date: 'Sep 9',
+              startDate: 'Sep 9',
+              endDate: 'Dec 2',
               type: 'Design'
             }
           ]
