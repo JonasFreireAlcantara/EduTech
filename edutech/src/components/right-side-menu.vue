@@ -5,6 +5,7 @@
   bottom
   temporary
   right
+  style="z-index:100;"
   >
     <v-list
       nav
