@@ -4,6 +4,7 @@
       elevate-on-scroll
       color="#541388"
       class="nav"
+      style="z-index:99;"
     >
       <v-app-bar-nav-icon v-if="isLogged" color="#FFF" @click="sendData(true, false)"/>
 
