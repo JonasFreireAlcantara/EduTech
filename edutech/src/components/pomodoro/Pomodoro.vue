@@ -37,6 +37,8 @@
 </template>
 
 <script>
+const audioFile = new Audio(require('../../assets/audio/alarm.mp3'))
+
 const FULL_DASH_ARRAY = 283
 
 const COLOR_CODES = {
@@ -55,15 +57,11 @@ export default {
 
   data () {
     return {
-      running: false,
-      paused: false,
-      stopped: true,
-      timerCount: (this.minutes * 60) + this.seconds,
-      timeLimit: (this.minutes * 60) + this.seconds,
-      min: this.minutes,
-      secs: this.seconds,
-      warning: this.warningThreshold * 60,
-      alert: this.alertThreshold * 60
+      pomodoro: this.$store.state.pomodoro,
+      loadToGlobal: this.$store.state.loadedToGlobal,
+      runningLocal: this.$store.state.pomodoro.running,
+      changed: 0,
+      typePomodoro: !this.pomodoroType ? this.$store.state.loadedToGlobal : { type: this.pomodoroType }
     }
   },
   props: {
@@ -88,39 +86,61 @@ export default {
     warningThreshold: {
       type: Number,
       default: 5
+    },
+    pomodoroType: {
+      type: Number,
+      default: 1
     }
 
   },
+  created: function () {
+    audioFile.loop = true
+  },
   computed: {
     currentTime: function () {
-      const minutes = this.min < 10 ? '0' + this.min : this.min
-      const seconds = this.secs < 10 ? '0' + this.secs : this.secs
+      const min = (this.pomodoro.pomodoroType === this.typePomodoro.type && this.pomodoro.min !== null) ? this.pomodoro.min : this.minutes
+      const secs = (this.pomodoro.pomodoroType === this.typePomodoro.type && this.pomodoro.secs !== null) ? this.pomodoro.secs : this.seconds
+      if (min === 0 && secs === 0) {
+        this.alerta()
+      }
+      const minutes = min < 10 ? '0' + min : min
+      const seconds = secs < 10 ? '0' + secs : secs
+
       return `${minutes}:${seconds}`
     },
-
-    // Update the dasharray value as time passes, starting with 283
     circleDasharray () {
       return `${(this.timeFraction * FULL_DASH_ARRAY).toFixed(0)} 283`
     },
     timeFraction () {
-      const rawTimeFraction = this.timerCount / this.timeLimit
+      if (this.pomodoro.pomodoroType !== this.typePomodoro.type) {
+        return
+      }
+      const rawTimeFraction = this.pomodoro.timerCount / this.pomodoro.timeLimit
 
-      return rawTimeFraction - (1 / this.timeLimit) * (1 - rawTimeFraction)
+      return rawTimeFraction - (1 / this.pomodoro.timeLimit) * (1 - rawTimeFraction)
     },
     remainingPathColor () {
       const { alert, warning, info } = COLOR_CODES
+      const timerCount = (this.pomodoro.pomodoroType === this.typePomodoro.type && this.pomodoro.timerCount !== null) ? this.pomodoro.timerCount : (this.minutes * 60) + this.seconds
+      const alertTime = (this.pomodoro.pomodoroType === this.typePomodoro.type && this.pomodoro.alert !== null) ? this.pomodoro.alert : this.alertThreshold * 60
+      const warningTime = (this.pomodoro.pomodoroType === this.typePomodoro.type && this.pomodoro.warningThreshold !== null) ? this.pomodoro.warningThreshold : this.warningThreshold * 60
 
-      if (this.timerCount <= this.alert) {
+      if (timerCount <= alertTime) {
         return alert.color
-      } else if (this.timerCount <= this.warning) {
+      } else if (timerCount <= warningTime) {
         return warning.color
       } else {
         return info.color
       }
+    },
+    running () {
+      return this.runningLocal
+    },
+    timerCount () {
+      return this.changed
     }
   },
   watch: {
-
     running (value) {
       if (value) {
         setTimeout(() => {
@@ -137,38 +157,81 @@ export default {
 
     }
   },
-
   methods: {
 
     run: function () {
-      this.running = true
-      this.paused = false
-      this.stopped = false
+      if (this.loadToGlobal.type !== this.typePomodoro.type || this.typePomodoro.type === -1) {
+        this.loadValuesToGlobal()
+      }
+
+      this.pomodoro.running = true
+      this.runningLocal = this.pomodoro.running
+      this.pomodoro.paused = false
+      this.pomodoro.stopped = false
+
+      if (this.runningLocal !== this.pomodoro.running) {
+        this.changed += 1
+        this.runningLocal = this.pomodoro.running
+      }
     },
     pause: function () {
-      this.running = false
-      this.paused = true
-      this.stopped = false
+      if (this.loadToGlobal.type === this.typePomodoro.type) {
+        this.pomodoro.running = false
+        this.runningLocal = this.pomodoro.running
+        this.pomodoro.paused = true
+        this.pomodoro.stopped = false
+      }
     },
     reset: function () {
-      this.running = false
-      this.paused = false
-      this.stopped = true
-      this.min = this.minutes
-      this.secs = this.seconds
-      this.timerCount = this.timeLimit
+      if (this.loadToGlobal.type === this.typePomodoro.type) {
+        this.loadValuesToGlobal()
+        this.runningLocal = this.pomodoro.running
+      }
     },
     countDown: function () {
-      if (this.secs > 0 && this.running) {
-        this.secs--
-        this.timerCount = this.timerCount === 1 ? this.timerCount : this.timerCount - 1
-      } else if (this.min > 0 && this.secs === 0 && this.running) {
-        this.secs = 59
-        this.min--
-        this.timerCount = this.timerCount === 1 ? this.timerCount : this.timerCount - 1
+      if (this.pomodoro.secs > 0 && this.pomodoro.running) {
+        this.pomodoro.secs--
+        this.pomodoro.timerCount = this.pomodoro.timerCount === 1 ? this.pomodoro.timerCount : this.pomodoro.timerCount - 1
+        this.changed += 1
+      } else if (this.pomodoro.min > 0 && this.pomodoro.secs === 0 && this.pomodoro.running) {
+        this.pomodoro.secs = 59
+        this.pomodoro.min--
+        this.pomodoro.timerCount = this.pomodoro.timerCount === 1 ? this.pomodoro.timerCount : this.pomodoro.timerCount - 1
+        this.changed += 1
       }
+    },
+    loadValuesToGlobal: function () {
+      const pomodoro = {
+        running: false,
+        paused: false,
+        stopped: true,
+        timerCount: (this.minutes * 60) + this.seconds,
+        timeLimit: (this.minutes * 60) + this.seconds,
+        min: this.minutes,
+        secs: this.seconds,
+        warning: this.warningThreshold * 60,
+        alert: this.alertThreshold * 60,
+        pomodoroType: this.typePomodoro.type !== -1 ? this.typePomodoro.type : 1
+      }
+      for (const prop in this.pomodoro) {
+        this.pomodoro[prop] = pomodoro[prop]
+      }
+      this.loadToGlobal.type = this.typePomodoro.type !== -1 ? this.typePomodoro.type : 1
+    },
+    alerta: function () {
+      let pomoType = ''
+      if (this.pomodoro.pomodoroType === 1) {
+        pomoType = 'estudo'
+      } else if (this.pomodoro.pomodoroType === 2) {
+        pomoType = 'pausa curta'
+      } else {
+        pomoType = 'pausa longa'
+      }
+      audioFile.play()
+      this.$alert(`O seu tempo de ${pomoType} chegou ao fim!`).then(() => {
+        audioFile.pause()
+      })
     }
-
   }
 
 }
@@ -191,7 +254,7 @@ export default {
 
  .base-timer-path-elapsed {
     stroke-width: 5px;
-    stroke:#541388;
+    stroke:gray;
   }
 
 .base-timer-label {

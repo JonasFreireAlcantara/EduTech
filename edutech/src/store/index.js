@@ -5,6 +5,19 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    loadedToGlobal: { type: -1 },
+    pomodoro: {
+      running: false,
+      paused: false,
+      stopped: true,
+      timerCount: null,
+      timeLimit: null,
+      min: null,
+      secs: null,
+      warning: null,
+      alert: null,
+      pomodoroType: 1
+    },
     workspaces: [
       {
         id: 0,

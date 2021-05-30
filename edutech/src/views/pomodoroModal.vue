@@ -4,18 +4,21 @@
       <b-tab title="Pomodoro" title-link-class="tab" active>
         <Pomodoro
           :minutes=25
+          :pomodoroType=1
         />
       </b-tab>
 
       <b-tab title="Pausa Curta" title-link-class="tab">
         <Pomodoro
           :minutes=5
+          :pomodoroType=2
         />
       </b-tab>
 
       <b-tab title="Pausa Longa" title-link-class="tab">
         <Pomodoro
           :minutes=15
+          :pomodoroType=3
         />
       </b-tab>
     </b-tabs>

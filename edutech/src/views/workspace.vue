@@ -44,9 +44,8 @@
           </div>
         </b-col>
       </b-row>
-
       <b-row>
-        <b-col md="6" sm="12" class="mt-5">
+        <b-col md="6" sm="12">
           <div class="component-bg p-3 shadow rounded h-100">
             <b-row>
               <b-col cols="10">
@@ -59,7 +58,7 @@
           </div>
         </b-col>
 
-        <b-col md="6" sm="12" class="mt-5">
+        <b-col md="6" sm="12">
           <div class="component-bg p-3 shadow rounded h-100">
             <b-row>
               <b-col cols="10">
@@ -69,9 +68,9 @@
                 <a v-b-modal.pomodoroModal><h2><b-icon icon="arrows-angle-expand"></b-icon></h2></a>
               </b-col>
             </b-row>
-            <b-row class="mt-2">
-              <b-col>
-                <h4>Implemented modal</h4>
+            <b-row class="mt-2 mx-auto">
+              <b-col class="p-0">
+                <Pomodoro :minutes=25 :pomodoroType=0 />
               </b-col>
             </b-row>
           </div>
@@ -90,6 +89,7 @@ import PomodoroModal from './pomodoroModal'
 import CalendarModal from './calendarModal'
 import Calendar from '../components/calendar/calendar.vue'
 import TopComponent from '../components/top-component.vue'
+import Pomodoro from '../components/pomodoro/Pomodoro'
 
 export default ({
   data () {
@@ -128,6 +128,7 @@ export default ({
     PomodoroModal,
     CalendarModal,
     Calendar,
+    Pomodoro,
     TopComponent
   },
   computed: {
