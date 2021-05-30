@@ -1,11 +1,12 @@
 <template>
   <div class='task-wrapper bg-white shadow rounded px-3 pt-3 pb-1 border border-white'>
+    <TaskCardModal :task="task" />
 
     <div class="task-info-wrapper">
       <div class='task-title-resume-wrapper pt-2 pb-4'>
         <div class="task-title-wrapper">
           <h5 class='task-title mb-4'>{{task.title}}</h5>
-          <h5 class="task-edit-icon ml-2 rounded"><b-icon icon="pencil-square"></b-icon></h5>
+          <a v-b-modal="`task${task.id}`" ><h5 class="task-edit-icon ml-2 rounded"><b-icon icon="pencil-square"></b-icon></h5></a>
         </div>
         <p class='task-resume'>{{getResume(task)}}</p>
       </div>
@@ -20,8 +21,11 @@
 </template>
 
 <script>
+import TaskCardModal from '../../views/taskCardModal'
+
 export default {
   components: {
+    TaskCardModal
   },
   props: {
     task: {

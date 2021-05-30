@@ -1,5 +1,7 @@
 <template>
   <div id='kanban'>
+    <!-- <TaskCardModal /> -->
+
     <div class='d-flex justify-content-center'>
       <div class='min-vh-100 d-flex overflow-auto py-5'>
         <div
@@ -29,12 +31,15 @@
 
 <script>
 import draggable from 'vuedraggable'
-import TaskMiniCard from './TaskMiniCard.vue'
+import TaskMiniCard from './TaskMiniCard'
+// import TaskCardModal from '../../views/taskCardModal'
+
 export default {
   name: 'App',
   components: {
     TaskMiniCard,
     draggable
+    // TaskCardModal
   },
   methods: {
     log: function (evt) {
@@ -49,12 +54,17 @@ export default {
           tasks: [
             {
               id: 1,
-              title: 'Add discount code to checkout page',
+              title: 'Atividades do dia de semana',
               description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Nam vehicula ipsum non tellus porttitor finibus. Mauris pharetra dictum urna eget fermentum. Suspendisse et purus massa. Nunc varius iaculis magna, at lacinia neque mattis ac. Proin aliquet est eu sagittis rhoncus. In hendrerit augue eu erat luctus congue. Phasellus a velit vitae risus convallis egestas sed sed nulla. Vestibulum ut quam fermentum, aliquet augue eu, hendrerit ex. Fusce et odio id eros commodo ultricies. Proin vestibulum dapibus vestibulum. Integer vehicula consequat urna, in scelerisque nunc porttitor eget. Aenean efficitur mauris in dictum rutrum. Nullam dictum ultrices pulvinar. Donec efficitur nulla tellus, a aliquet ligula scelerisque id. Quisque non porta velit, non laoreet nunc. Nunc et elit sed magna condimentum ultrices.',
-              resume: 'This is the most possible simple resume than ever.',
+              resume: 'Esse é um pequeno resumo de exemplo.',
               startDate: 'Sep 14',
               endDate: 'Dec 12',
-              type: 'Feature Request'
+              type: 'Feature Request',
+              todos: [
+                { description: 'Lavar as louças', completed: false },
+                { description: 'Fazer prova de lógica', completed: false },
+                { description: 'Dar banho no cachorro', completed: true }
+              ]
             },
             {
               id: 2,
