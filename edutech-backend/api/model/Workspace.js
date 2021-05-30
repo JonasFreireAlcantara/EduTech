@@ -5,6 +5,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 var workspace = new Schema({
   name: String,
   description : String,
+  owner: {type: ObjectId, ref: 'User'},
   icon: Buffer,
   lastAccess: Date,
   tasks: [{type: ObjectId, ref: 'Task'}],
