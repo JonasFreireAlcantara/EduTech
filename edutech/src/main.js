@@ -9,7 +9,6 @@ import UUID from 'vue-uuid'
 import store from './store'
 import GoogleLogin from 'vue-google-login'
 import VueSimpleAlert from 'vue-simple-alert'
-
 import './app.scss'
 
 // Make BootstrapVue available throughout your project

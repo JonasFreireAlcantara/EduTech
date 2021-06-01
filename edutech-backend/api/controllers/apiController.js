@@ -10,11 +10,9 @@ const { isValidId } = require('../lib/utils');
 
 const HTTP_STATUS_CODE = {
   SUCCESS: 200,
-
   BAD_REQUEST: 400,
   NOT_FOUND: 404,
   CONFLICT: 409,
-
   INTERNAL_SERVER_ERROR: 500
 }
 
@@ -24,7 +22,6 @@ exports.getUser = async (req, res) => {
   if (!user) {
     return res.status(HTTP_STATUS_CODE.NOT_FOUND).send();
   }
-
   return res.send(user);
 };
 
@@ -39,7 +36,7 @@ exports.createUser = function (req, res, next) {
         error: "Email já registrado!"
       });
     }
-  }).catch(next);;
+  }).catch(next);
 };
 
 exports.updateUser = async function (req, res, next) {

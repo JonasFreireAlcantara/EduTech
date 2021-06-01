@@ -14,6 +14,7 @@
 <script>
 import TopComponent from '../components/top-component.vue'
 import GoogleLogin from 'vue-google-login'
+import axios from '../variables/variables'
 
 export default {
   data () {
@@ -35,12 +36,25 @@ export default {
     GoogleLogin
   },
   methods: {
-    onSuccess (googleUser) {
-      console.log('On success')
-      console.log(googleUser)
+    async onSuccess (googleUser) {
+      // console.log(googleUser)
       // This only gets the user information: id, name, imageUrl and email
-      console.log(googleUser.getBasicProfile())
-      this.$router.push({ name: 'Workspace' })
+      // console.log(googleUser.getBasicProfile())
+      let userOnBase = true
+      const gUser = googleUser.getBasicProfile()
+      await axios.get(`user/${gUser.ou}`).catch(() => { userOnBase = false })
+      if (!userOnBase) {
+        const user = {
+          token: gUser.MT,
+          name: gUser.Ue,
+          email: gUser.ou,
+          photo: gUser.uK
+        }
+        await axios.post('user', user).then(() => { userOnBase = true })
+      }
+      if (userOnBase) {
+        this.$router.push({ name: 'Workspace' })
+      }
     },
     onFailure (failure) {
       console.log(failure.error)

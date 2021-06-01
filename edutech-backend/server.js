@@ -1,10 +1,10 @@
 const express    = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors')
 const mongoose = require('mongoose');
 
-const port = 8080;
-// const uri = "mongodb+srv://admin:admin@cluster0.ewelv.mongodb.net/test?retryWrites=true&w=majority";
-const uri = 'mongodb+srv://jonas:lambelambe123@cluster0.8rplu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+const port = 5000;
+const uri = "mongodb+srv://admin:admin@cluster0.ewelv.mongodb.net/test?retryWrites=true&w=majority";
 
 const app = express();
 
@@ -13,6 +13,7 @@ app.set('port', process.env.PORT || port);
 
 // MIDDLEWARES
 app.use(bodyParser.json());
+app.use(cors())
 
 mongoose.connect(uri, { useUnifiedTopology: true });
 
