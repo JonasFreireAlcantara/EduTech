@@ -5,36 +5,62 @@ const columnModel = require('../model/Column');
 const labelModel = require('../model/Label');
 const toDoItemModel = require('../model/ToDoItem');
 const pomodoroModel = require('../model/Pomodoro');
+const Workspace = require('../model/Workspace');
+const { isValidId } = require('../lib/utils');
+
+const HTTP_STATUS_CODE = {
+  SUCCESS: 200,
+
+  BAD_REQUEST: 400,
+  NOT_FOUND: 404,
+  CONFLICT: 409,
+
+  INTERNAL_SERVER_ERROR: 500
+}
 
 // CRUD User ############################################
-exports.getUser = function (req, res, next) {
-  userModel.findOne({email: req.params.email}).then(function(user){
-    res.send(user);
-  }).catch(next);;
+exports.getUser = async (req, res) => {
+  const user = await userModel.findOne({email: req.params.email});
+  if (!user) {
+    return res.status(HTTP_STATUS_CODE.NOT_FOUND).send();
+  }
+
+  return res.send(user);
 };
 
 exports.createUser = function (req, res, next) {
   userModel.exists({email: req.body.email}).then(function(result) {
     if (!result) {
-      userModel.create(req.body).then(function(user){
+        userModel.create(req.body).then(function(user){
         res.send(user);
       }).catch(next);
     } else {
-      res.send({
+      res.status(HTTP_STATUS_CODE.CONFLICT).send({
         error: "Email já registrado!"
       });
     }
   }).catch(next);;
-
-  
 };
 
-exports.updateUser = function (req, res, next) {
-  userModel.findByIdAndUpdate({_id: req.params.id}, req.body).then(function(){
-    userModel.findOne({_id: req.params.id}).then(function(user){
-      res.send(user);
-    });
-  }).catch(next);
+exports.updateUser = async function (req, res, next) {
+
+  const user = await userModel.findById(req.params.id)
+  if (!user) {
+    return res.status(HTTP_STATUS_CODE.NOT_FOUND).send({ error: 'Usuário não encontrado'});s
+  }
+
+  userModel.findOneAndUpdate(
+    {_id: req.params.id},
+    req.body,
+    (error, user) => {
+      if (error) {
+        return res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).send(error);
+      }
+
+      return res.send(user);
+    }
+  )
+
 };
 
 //exports.deleteUser = function (req, res) {
@@ -52,21 +78,44 @@ exports.updateUser = function (req, res, next) {
 // CRUD Workspace ############################################
 
 exports.getWorkspaceById = function (req, res, next) {
-  workspaceModel.findOne({_id: req.params.id}).then(function(workspace){
-    res.send(workspace);
+  const { id } = req.params;
+
+  if (!isValidId(id)) {
+    return res.status(HTTP_STATUS_CODE.BAD_REQUEST).send({ error: 'Id Inválido' });
+  }
+
+  workspaceModel.findOne({_id: id}).then(function(workspace){
+    if (!workspace) {
+      return res.status(HTTP_STATUS_CODE.NOT_FOUND).send({ error: 'Workspace não encontrado.' })
+    }
+    return res.send(workspace);
   }).catch(next);
 };
 
 exports.getWorkspaceByOwnerId = function (req, res, next) {
-  workspaceModel.find({owner: req.params.ownerId}).then(function(workspace){
+  const { ownerId } = req.params;
+
+  if (!isValidId(ownerId)) {
+    return res.status(HTTP_STATUS_CODE.BAD_REQUEST).send({ error: 'Id Inválido' });
+  }
+
+  workspaceModel.find({owner: ownerId}).then(function(workspace){
+    if (!workspace) {
+      return res.status(HTTP_STATUS_CODE.NOT_FOUND).send({ error: 'Workspace não encontrado.' })
+    }
     res.send(workspace);
   }).catch(next);
 };
 
-exports.createWorkspace = function (req, res, next) {
-  workspaceModel.create(req.body).then(function(workspace){
-    res.send(workspace);
-  }).catch(next);
+exports.createWorkspace = async (req, res) => {
+
+  let workspace = await workspaceModel.findOne({ name: req.body.name });
+  if (workspace) {
+    return res.status(HTTP_STATUS_CODE.CONFLICT).send({ error: 'Já existe uma workspace com este nome.' });
+  }
+
+  workspace = await workspaceModel.create(req.body);
+  return res.send(workspace);
 };
 
 exports.updateWorkspace = function (req, res, next) {

@@ -3,7 +3,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const port = 8080;
-const uri = "mongodb+srv://admin:admin@cluster0.ewelv.mongodb.net/test?retryWrites=true&w=majority";
+// const uri = "mongodb+srv://admin:admin@cluster0.ewelv.mongodb.net/test?retryWrites=true&w=majority";
+const uri = 'mongodb+srv://jonas:lambelambe123@cluster0.8rplu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 
 const app = express();
 
