@@ -1,13 +1,17 @@
 <template>
   <div>
     <TopComponent :isLogged="true"/>
+    <WorkspaceFormModal/>
     <b-container class="component-bg">
-      <b-row>
-        <b-col>
+      <b-row align-v="center">
+        <b-col cols="10">
           <h1>Seus Workspaces</h1>
-          <hr>
+        </b-col>
+        <b-col cols="2">
+          <b-button v-b-modal.newWorkspaceModal><b-icon icon="plus"></b-icon>Novo Workspace</b-button>
         </b-col>
       </b-row>
+      <hr>
       <b-row cols="1" cols-md="3">
         <b-col v-for="workspace in workspaces" :key="workspace.id" >
           <Card :workspace="workspace"/>
@@ -20,6 +24,7 @@
 <script>
 import TopComponent from '../components/top-component.vue'
 import Card from '../components/workspace-card'
+import WorkspaceFormModal from '../components/workspace/workspaceForm'
 
 export default {
   data () {
@@ -29,7 +34,8 @@ export default {
   },
   components: {
     TopComponent,
-    Card
+    Card,
+    WorkspaceFormModal
   }
 }
 </script>

@@ -43,16 +43,18 @@ export default {
       let userOnBase = true
       const gUser = googleUser.getBasicProfile()
       await axios.get(`user/${gUser.ou}`).catch(() => { userOnBase = false })
+      var user = {
+        token: gUser.MT,
+        name: gUser.Ue,
+        email: gUser.ou,
+        photo: gUser.uK
+      }
       if (!userOnBase) {
-        const user = {
-          token: gUser.MT,
-          name: gUser.Ue,
-          email: gUser.ou,
-          photo: gUser.uK
-        }
         await axios.post('user', user).then(() => { userOnBase = true })
       }
       if (userOnBase) {
+        localStorage.setItem('token', gUser.MT)
+        this.$store.commit('auth_success', gUser.MT, gUser.ou)
         this.$router.push({ name: 'Workspace' })
       }
     },

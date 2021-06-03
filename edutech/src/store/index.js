@@ -6,6 +6,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     loadedToGlobal: { type: -1 },
+    status: '',
+    token: localStorage.getItem('token') || '',
+    userEmail: '',
     pomodoro: {
       running: false,
       paused: false,
@@ -67,8 +70,24 @@ export default new Vuex.Store({
     ]
   },
   getters: {
+    isLoggedIn: state => !!state.token,
+    authStatus: state => state.status
   },
   mutations: {
+    auth_success (state, token, userEmail) {
+      state.status = 'success'
+      state.token = token
+      state.userEmail = userEmail
+      console.log(state)
+    },
+    auth_error (state) {
+      state.status = 'error'
+    },
+    logout (state) {
+      state.status = ''
+      state.token = ''
+      state.userEmail = ''
+    }
   },
   actions: {
   }
