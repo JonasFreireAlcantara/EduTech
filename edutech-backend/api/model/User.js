@@ -5,7 +5,7 @@ var user = new Schema({
   token: String,
   name : String,
   email: String,
-  photo: Buffer
+  photo: String
 });
 
 module.exports = mongoose.model('User', user);

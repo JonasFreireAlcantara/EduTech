@@ -53,8 +53,9 @@ export default {
         await axios.post('user', user).then(() => { userOnBase = true })
       }
       if (userOnBase) {
-        localStorage.setItem('token', gUser.MT)
-        this.$store.commit('auth_success', gUser.MT, gUser.ou)
+        localStorage.setItem('token', user.token)
+        localStorage.setItem('useremail', user.email)
+        this.$store.commit('auth_success', user)
         this.$router.push({ name: 'Workspace' })
       }
     },

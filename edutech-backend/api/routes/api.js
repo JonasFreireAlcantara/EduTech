@@ -45,4 +45,7 @@ router.post('/pomodoro', apiController.createPomodoro);
 router.put('/pomodoro/:id', apiController.updatePomodoro);
 router.delete('/pomodoro/:id', apiController.deletePomodoro);
 
+// Rotas Files ############################################
+router.get('/file/:id', apiController.getFileById);
+
 module.exports = router;  

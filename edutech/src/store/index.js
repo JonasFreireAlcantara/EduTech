@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from '../variables/variables'
 
 Vue.use(Vuex)
 
@@ -8,7 +9,7 @@ export default new Vuex.Store({
     loadedToGlobal: { type: -1 },
     status: '',
     token: localStorage.getItem('token') || '',
-    userEmail: '',
+    useremail: localStorage.getItem('useremail') || '',
     pomodoro: {
       running: false,
       paused: false,
@@ -21,64 +22,20 @@ export default new Vuex.Store({
       alert: null,
       pomodoroType: 1
     },
-    workspaces: [
-      {
-        id: 0,
-        name: 'Matemática',
-        description: 'Estudo pessoal de equações de 2º grau e geometria euclidiana',
-        icon: { blank: true, width: 70, height: 70, class: 'm1' },
-        tasks: [],
-        pomodoros: [],
-        columns: []
-      },
-      {
-        id: 1,
-        name: 'Português',
-        description: 'Aprimoramento da língua portuguesa e suas nuances do cotidiano',
-        icon: { blank: true, width: 70, height: 70, class: 'm1' },
-        tasks: [],
-        pomodoros: [],
-        columns: []
-      },
-      {
-        id: 2,
-        name: 'Geografia',
-        description: 'Compreensão acerca dos eventos geográficos da atualidade',
-        icon: { blank: true, width: 70, height: 70, class: 'm1' },
-        tasks: [],
-        pomodoros: [],
-        columns: []
-      },
-      {
-        id: 3,
-        name: 'Biologia',
-        description: 'Todo o enredo da biologia secular',
-        icon: { blank: true, width: 70, height: 70, class: 'm1' },
-        tasks: [],
-        pomodoros: [],
-        columns: []
-      },
-      {
-        id: 4,
-        name: 'História do Brasil',
-        description: 'Estudo sobre a história do Brasil na época antiga e moderna',
-        icon: { blank: true, width: 70, height: 70, class: 'm1' },
-        tasks: [],
-        pomodoros: [],
-        columns: []
-      }
-    ]
+    workspaces: []
   },
   getters: {
     isLoggedIn: state => !!state.token,
-    authStatus: state => state.status
+    authStatus: state => state.status,
+    workspaces: state => {
+      return state.workspaces
+    }
   },
   mutations: {
-    auth_success (state, token, userEmail) {
+    auth_success (state, user) {
       state.status = 'success'
-      state.token = token
-      state.userEmail = userEmail
-      console.log(state)
+      state.toker = user.token
+      state.useremail = user.email
     },
     auth_error (state) {
       state.status = 'error'
@@ -86,9 +43,22 @@ export default new Vuex.Store({
     logout (state) {
       state.status = ''
       state.token = ''
-      state.userEmail = ''
+      state.useremail = ''
+    },
+    SET_Workspaces (state, workspaces) {
+      state.workspaces = workspaces
     }
   },
   actions: {
+    async loadWorkspaces ({ commit }) {
+      let ownerId = ''
+      await axios.get(`user/${this.state.useremail}`).then((response) => { ownerId = response.data._id })
+      axios
+        .get('workspace/OwnerId/' + ownerId)
+        .then(response => response.data)
+        .then(workspaces => {
+          commit('SET_Workspaces', workspaces)
+        })
+    }
   }
 })

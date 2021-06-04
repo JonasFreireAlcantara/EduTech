@@ -13,7 +13,7 @@
       </b-row>
       <hr>
       <b-row cols="1" cols-md="3">
-        <b-col v-for="workspace in workspaces" :key="workspace.id" >
+        <b-col v-for="workspace in workspaces" :key="workspace.id" style="max-width: 33%;" >
           <Card :workspace="workspace"/>
         </b-col>
       </b-row>
@@ -25,18 +25,20 @@
 import TopComponent from '../components/top-component.vue'
 import Card from '../components/workspace-card'
 import WorkspaceFormModal from '../components/workspace/workspaceForm'
+import { mapState } from 'vuex'
 
 export default {
-  data () {
-    return {
-      workspaces: this.$store.state.workspaces
-    }
-  },
   components: {
     TopComponent,
     Card,
     WorkspaceFormModal
-  }
+  },
+  mounted () {
+    this.$store.dispatch('loadWorkspaces')
+  },
+  computed: mapState([
+    'workspaces'
+  ])
 }
 </script>
 

@@ -2,7 +2,7 @@
   <div>
     <TopComponent :isLogged="true"/>
     <b-container class="margin-top">
-      <h1>{{getWorkspaceName}}</h1>
+      <h1>{{getWorkspace.name}}</h1>
       <hr>
       <NextEvents/>
       <PomodoroModal/>
@@ -132,9 +132,13 @@ export default ({
     TopComponent
   },
   computed: {
-    getWorkspaceName: function () {
-      return this.$store.state.workspaces[this.$router.history.current.params.id].name
+    getWorkspace: function () {
+      var workspace = this.$store.state.workspaces.find(el => el.id === this.$router.history.current.params.id)
+      return workspace
     }
+  },
+  mounted () {
+    this.$store.dispatch('loadWorkspaces')
   }
 })
 </script>

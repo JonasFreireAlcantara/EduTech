@@ -5,8 +5,10 @@ const columnModel = require('../model/Column');
 const labelModel = require('../model/Label');
 const toDoItemModel = require('../model/ToDoItem');
 const pomodoroModel = require('../model/Pomodoro');
-const Workspace = require('../model/Workspace');
+const fsFiles = require('../model/fsfiles');
+const fsChunks = require('../model/fschunks');
 const { isValidId } = require('../lib/utils');
+const upload = require("../middleware/upload");
 
 const HTTP_STATUS_CODE = {
   SUCCESS: 200,
@@ -110,7 +112,10 @@ exports.createWorkspace = async (req, res) => {
   if (workspace) {
     return res.status(HTTP_STATUS_CODE.CONFLICT).send({ error: 'Já existe uma workspace com este nome.' });
   }
-
+  await upload(req, res);
+  if (req.file && req.file.id) {
+    req.body.icon = req.file.id;
+  }
   workspace = await workspaceModel.create(req.body);
   return res.send(workspace);
 };
@@ -266,5 +271,18 @@ exports.updatePomodoro = function (req, res, next) {
 exports.deletePomodoro = function (req, res, next) {
   pomodoroModel.findByIdAndRemove({_id: req.params.id}).then(function(pomodoro){
     res.send(pomodoro);
+  }).catch(next);
+};
+
+// CRUD Files ##################################
+exports.getFileById = function (req, res, next) {
+  const { id } = req.params;
+
+  fsChunks.findOne({files_id: id}).populate('files_id').then(function(fschunk){
+    if (!fschunk) {
+      return res.status(HTTP_STATUS_CODE.NOT_FOUND).send({ error: 'Arquivo não encontrado.' })
+    }
+    res.set({'Content-Type': fschunk.files_id.contentType})
+    return res.send(fschunk.data);
   }).catch(next);
 };
