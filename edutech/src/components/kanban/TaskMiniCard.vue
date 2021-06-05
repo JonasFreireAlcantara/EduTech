@@ -4,7 +4,7 @@
 
     <div class="task-info-wrapper">
       <div class='task-title-resume-wrapper pt-2 pb-4'>
-        <div class="task-title-wrapper">
+        <div class="task-title-wrapper d-flex justify-content-between">
           <h5 class='task-title mb-4'>{{task.title}}</h5>
           <a v-b-modal="`task${task.id}`" ><h5 class="task-edit-icon ml-2 rounded"><b-icon icon="pencil-square"></b-icon></h5></a>
         </div>

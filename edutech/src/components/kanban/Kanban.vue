@@ -2,15 +2,15 @@
   <div id='kanban'>
     <!-- <TaskCardModal /> -->
 
-    <div class='d-flex justify-content-center'>
-      <div class='min-vh-100 d-flex overflow-auto py-5'>
+    <div class='mt-4'>
+      <div class='d-flex justify-content-start'>
         <div
           v-for='column in columns'
           :key='column.title'
-          class='bg-secondary rounded-lg px-3 py-3 column-width rounded'
-          style="margin-right: 20px;"
+          class='bg-primary rounded-lg px-4 py-4 mr-5 column-width rounded kanban-column'
+
         >
-          <p class='text-white' style="font-weight: bold; font-size: 0.875rem;">{{column.title}}</p>
+          <h3 class='kanban-column-title mb-4'>{{column.title}}</h3>
           <!-- Draggable component comes from vuedraggable. It provides drag & drop functionality -->
           <draggable :list='column.tasks' :animation='200' ghost-class='ghost-card' group='tasks' :emptyInsertThreshold="100">
             <!-- Each element from here will be draggable and animated. Note :key is very important here to be unique both for draggable and animations to be smooth & consistent. -->
@@ -18,7 +18,7 @@
               v-for='(task) in column.tasks'
               :key='task.id'
               :task='task'
-              class='mt-3'
+              class='mt-4'
               style="cursor: move;"
             ></task-mini-card>
           </draggable>
@@ -127,9 +127,19 @@ export default {
 </script>
 
 <style scoped>
+.kanban-column {
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.6);
+}
+
+.kanban-column-title {
+  font-size: 1.8em;
+  color: white;
+  font-weight: bold;
+}
 .column-width {
   min-width: 320px;
-  width: 320px;
+  width: 380px;
+  /* width: 320px; */
 }
 /* Unfortunately @apply cannot be setup in codesandbox,
 but you'd use '@apply border opacity-50 border-blue-500 bg-gray-200' here */
