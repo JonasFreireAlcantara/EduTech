@@ -9,6 +9,11 @@
           :key='column.title'
           class='bg-primary rounded-lg px-4 py-4 mr-5 column-width rounded kanban-column'
         >
+          <create-task-mini-card-modal
+            @taskCreate="handleTaskCreate"
+            :column="column"
+          ></create-task-mini-card-modal>
+
           <div class="d-flex justify-content-between align-items-center">
             <h3 class='kanban-column-title mb-4 text-white'>{{column.title}}</h3>
             <h5 class='kanban-column-delete-icon ml-2 rounded py-1 px-1' @click="handleColumnDelete(column)"><b-icon icon="trash-fill"></b-icon></h5>
@@ -23,9 +28,13 @@
               style="cursor: move;"
             ></task-mini-card>
           </draggable>
+
+          <div class="d-flex justify-content-center align-items-center pt-4">
+            <v-btn class="mx-2 bg-white text-primary" fab dark v-b-modal="`column${column.id}`"><v-icon dark>mdi-plus</v-icon></v-btn>
+          </div>
         </div>
 
-        <v-btn class="mx-2 bg-primary" fab dark v-b-modal.createKanbanColumnModal><v-icon dark>mdi-plus</v-icon></v-btn>
+        <v-btn class="mx-2 bg-primary" fab dark v-b-modal.create-kanban-column-modal><v-icon dark>mdi-plus</v-icon></v-btn>
       </div>
     </div>
   </div>
@@ -36,13 +45,15 @@
 import draggable from 'vuedraggable'
 import TaskMiniCard from './TaskMiniCard'
 import CreateKanbanColumnModal from './createKanbanColumnModal'
+import CreateTaskMiniCardModal from './createTaskMiniCardModal'
 
 export default {
   name: 'App',
   components: {
     TaskMiniCard,
     draggable,
-    CreateKanbanColumnModal
+    CreateKanbanColumnModal,
+    CreateTaskMiniCardModal
   },
   methods: {
     log: function (evt) {
@@ -53,6 +64,7 @@ export default {
         title: $event.name,
         tasks: []
       })
+      this.$bvModal.hide('create-kanban-column-modal')
       // TODO send requisition to the api
     },
     async handleColumnDelete (column) {
@@ -62,12 +74,16 @@ export default {
       }
       this.columns = this.columns.filter(col => col.title !== column.title)
       // TODO send requisition to the api
+    },
+    handleTaskCreate ($event) {
+      console.log('handleTaskCreate')
     }
   },
   data () {
     return {
       columns: [
         {
+          id: 1,
           title: 'Backlog',
           tasks: [
             {
@@ -101,6 +117,7 @@ export default {
           ]
         },
         {
+          id: 2,
           title: 'In Progress',
           tasks: [
             {
@@ -120,6 +137,7 @@ export default {
           ]
         },
         {
+          id: 3,
           title: 'Done',
           tasks: [
             {

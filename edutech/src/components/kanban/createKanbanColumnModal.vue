@@ -1,5 +1,5 @@
 <template>
-  <b-modal id="createKanbanColumnModal" title="Adicionar Coluna" size="lg" hide-footer header-class="text-dark" header-close-content="<h2>&times;</h2>" scrollable>
+  <b-modal id="create-kanban-column-modal" title="Adicionar Coluna" size="lg" hide-footer header-class="text-dark" header-close-content="<h2>&times;</h2>" scrollable>
     <b-form @submit="onSubmit">
       <b-form-row>
         
