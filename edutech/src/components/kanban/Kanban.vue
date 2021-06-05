@@ -1,6 +1,6 @@
 <template>
   <div id='kanban'>
-    <!-- <TaskCardModal /> -->
+    <CreateKanbanColumnModal @columnCreate="handleColumnCreate" />
 
     <div class='mt-4'>
       <div class='d-flex justify-content-start'>
@@ -8,12 +8,13 @@
           v-for='column in columns'
           :key='column.title'
           class='bg-primary rounded-lg px-4 py-4 mr-5 column-width rounded kanban-column'
-
         >
-          <h3 class='kanban-column-title mb-4'>{{column.title}}</h3>
-          <!-- Draggable component comes from vuedraggable. It provides drag & drop functionality -->
+          <div class="d-flex justify-content-between align-items-center">
+            <h3 class='kanban-column-title mb-4 text-white'>{{column.title}}</h3>
+            <h5 class='kanban-column-delete-icon ml-2 rounded py-1 px-1' @click="handleColumnDelete(column)"><b-icon icon="trash-fill"></b-icon></h5>
+          </div>
+
           <draggable :list='column.tasks' :animation='200' ghost-class='ghost-card' group='tasks' :emptyInsertThreshold="100">
-            <!-- Each element from here will be draggable and animated. Note :key is very important here to be unique both for draggable and animations to be smooth & consistent. -->
             <task-mini-card
               v-for='(task) in column.tasks'
               :key='task.id'
@@ -23,6 +24,8 @@
             ></task-mini-card>
           </draggable>
         </div>
+
+        <v-btn class="mx-2 bg-primary" fab dark v-b-modal.createKanbanColumnModal><v-icon dark>mdi-plus</v-icon></v-btn>
       </div>
     </div>
   </div>
@@ -32,18 +35,33 @@
 <script>
 import draggable from 'vuedraggable'
 import TaskMiniCard from './TaskMiniCard'
-// import TaskCardModal from '../../views/taskCardModal'
+import CreateKanbanColumnModal from './createKanbanColumnModal'
 
 export default {
   name: 'App',
   components: {
     TaskMiniCard,
-    draggable
-    // TaskCardModal
+    draggable,
+    CreateKanbanColumnModal
   },
   methods: {
     log: function (evt) {
       window.console.log(this.columns)
+    },
+    handleColumnCreate ($event) {
+      this.columns.push({
+        title: $event.name,
+        tasks: []
+      })
+      // TODO send requisition to the api
+    },
+    async handleColumnDelete (column) {
+      const del = await this.$bvModal.msgBoxConfirm('Você realmente deseja apagar esta coluna e todas tasks relacionadadas?', { title: 'Excluir' })
+      if (!del) {
+        return
+      }
+      this.columns = this.columns.filter(col => col.title !== column.title)
+      // TODO send requisition to the api
     }
   },
   data () {
@@ -133,7 +151,6 @@ export default {
 
 .kanban-column-title {
   font-size: 1.8em;
-  color: white;
   font-weight: bold;
 }
 .column-width {
@@ -141,6 +158,16 @@ export default {
   width: 380px;
   /* width: 320px; */
 }
+.kanban-column-delete-icon {
+  color: white;
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.kanban-column-delete-icon:hover {
+    background-color: white;
+    color: #584188;
+  }
 /* Unfortunately @apply cannot be setup in codesandbox,
 but you'd use '@apply border opacity-50 border-blue-500 bg-gray-200' here */
 .ghost-card {
