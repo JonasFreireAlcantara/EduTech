@@ -9,7 +9,7 @@
       <create-todo @on-new-todo='addTodo($event)' />
     </div>
     <div class='row'>
-      <div class='col-12 col-xl-2'>
+      <div class='col-12 col-sm-10 col-md-8 cl-lg-6'>
         <ul class='list-group'>
           <todo
             v-for='(todo, index) in todos'
@@ -36,7 +36,6 @@ export default {
     todos: {
       type: Array,
       default: () => {
-        console.log('default of todos fired')
         return []
       }
     }
