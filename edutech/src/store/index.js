@@ -20,7 +20,8 @@ export default new Vuex.Store({
       secs: null,
       warning: null,
       alert: null,
-      pomodoroType: 1
+      pomodoroType: 1,
+      changed: { count: 0 }
     },
     workspaces: []
   },

@@ -1,17 +1,23 @@
 <template>
   <v-app>
+    <div id="global-pomo">
+    <Pomodoro :minutes=25 :pomodoroType=-1 />
+    </div>
     <router-view/>
   </v-app>
 </template>
 
 <script>
-
+import Pomodoro from './components/pomodoro/Pomodoro'
 export default {
   name: 'App',
 
   data: () => ({
     //
-  })
+  }),
+  components: {
+    Pomodoro
+  }
 }
 </script>
 
@@ -35,5 +41,8 @@ export default {
     .modal-xl {
       max-width: 95%!important;
     }
+  }
+  #global-pomo {
+    display: none;
   }
 </style>
