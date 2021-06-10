@@ -34,8 +34,8 @@ export default new Vuex.Store({
   mutations: {
     auth_success (state, user) {
       state.status = 'success'
-      state.toker = user.token
-      state.useremail = user.email
+      state.toker = user.MT
+      state.useremail = user.ou
     },
     auth_error (state) {
       state.status = 'error'
