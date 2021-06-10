@@ -13,7 +13,6 @@
         type='text'
         class='form-control'
         v-model='newTodoDescription'
-        @blur='finishEditing()'
         ref='newTodo'
       />
     </form>

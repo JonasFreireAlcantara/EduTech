@@ -60,8 +60,8 @@ export default {
       pomodoro: this.$store.state.pomodoro,
       loadToGlobal: this.$store.state.loadedToGlobal,
       runningLocal: this.$store.state.pomodoro.running,
-      changed: 0,
-      typePomodoro: !this.pomodoroType ? this.$store.state.loadedToGlobal : { type: this.pomodoroType }
+      changed: this.pomodoroType === -1 ? this.$store.state.pomodoro.changed : { count: -1 },
+      typePomodoro: (!this.pomodoroType || this.pomodoroType === -1) ? this.$store.state.loadedToGlobal : { type: this.pomodoroType }
     }
   },
   props: {
@@ -100,6 +100,7 @@ export default {
     currentTime: function () {
       const min = (this.pomodoro.pomodoroType === this.typePomodoro.type && this.pomodoro.min !== null) ? this.pomodoro.min : this.minutes
       const secs = (this.pomodoro.pomodoroType === this.typePomodoro.type && this.pomodoro.secs !== null) ? this.pomodoro.secs : this.seconds
+
       if (min === 0 && secs === 0) {
         this.alerta()
       }
@@ -123,21 +124,21 @@ export default {
       const { alert, warning, info } = COLOR_CODES
       const timerCount = (this.pomodoro.pomodoroType === this.typePomodoro.type && this.pomodoro.timerCount !== null) ? this.pomodoro.timerCount : (this.minutes * 60) + this.seconds
       const alertTime = (this.pomodoro.pomodoroType === this.typePomodoro.type && this.pomodoro.alert !== null) ? this.pomodoro.alert : this.alertThreshold * 60
-      const warningTime = (this.pomodoro.pomodoroType === this.typePomodoro.type && this.pomodoro.warningThreshold !== null) ? this.pomodoro.warningThreshold : this.warningThreshold * 60
+      const warningTime = (this.pomodoro.pomodoroType === this.typePomodoro.type && this.pomodoro.warning !== null) ? this.pomodoro.warning : this.warningThreshold * 60
 
-      if (timerCount <= alertTime) {
+      if (timerCount < alertTime) {
         return alert.color
-      } else if (timerCount <= warningTime) {
+      } else if (timerCount < warningTime) {
         return warning.color
       } else {
         return info.color
       }
     },
     running () {
-      return this.runningLocal
+      return this.pomodoroType === -1 ? this.pomodoro.running : false
     },
     timerCount () {
-      return this.changed
+      return this.changed.count
     }
   },
   watch: {
@@ -159,19 +160,24 @@ export default {
   },
   methods: {
 
+    incrementChangedVariable: function () {
+      this.changed.count += 1
+    },
     run: function () {
       if (this.loadToGlobal.type !== this.typePomodoro.type || this.typePomodoro.type === -1) {
         this.loadValuesToGlobal()
       }
 
-      this.pomodoro.running = true
-      this.runningLocal = this.pomodoro.running
-      this.pomodoro.paused = false
-      this.pomodoro.stopped = false
-
-      if (this.runningLocal !== this.pomodoro.running) {
-        this.changed += 1
+      if (this.pomodoro.paused || this.pomodoro.stopped) {
+        this.pomodoro.running = true
         this.runningLocal = this.pomodoro.running
+        this.pomodoro.paused = false
+        this.pomodoro.stopped = false
+
+        if (this.runningLocal !== this.pomodoro.running) {
+          this.incrementChangedVariable()
+          this.runningLocal = this.pomodoro.running
+        }
       }
     },
     pause: function () {
@@ -192,26 +198,29 @@ export default {
       if (this.pomodoro.secs > 0 && this.pomodoro.running) {
         this.pomodoro.secs--
         this.pomodoro.timerCount = this.pomodoro.timerCount === 1 ? this.pomodoro.timerCount : this.pomodoro.timerCount - 1
-        this.changed += 1
+        this.incrementChangedVariable()
       } else if (this.pomodoro.min > 0 && this.pomodoro.secs === 0 && this.pomodoro.running) {
         this.pomodoro.secs = 59
         this.pomodoro.min--
         this.pomodoro.timerCount = this.pomodoro.timerCount === 1 ? this.pomodoro.timerCount : this.pomodoro.timerCount - 1
-        this.changed += 1
+        this.incrementChangedVariable()
       }
     },
     loadValuesToGlobal: function () {
+      const currentMin = (this.pomodoroType <= 0 && this.pomodoro.timeLimit !== null) ? (this.pomodoro.timeLimit - (this.pomodoro.timeLimit % 60)) / 60 : this.minutes
+      const currentSecs = (this.pomodoroType <= 0 && this.pomodoro.timeLimit !== null) ? this.pomodoro.timeLimit % 60 : this.seconds
       const pomodoro = {
         running: false,
         paused: false,
         stopped: true,
-        timerCount: (this.minutes * 60) + this.seconds,
-        timeLimit: (this.minutes * 60) + this.seconds,
-        min: this.minutes,
-        secs: this.seconds,
-        warning: this.warningThreshold * 60,
-        alert: this.alertThreshold * 60,
-        pomodoroType: this.typePomodoro.type !== -1 ? this.typePomodoro.type : 1
+        min: currentMin,
+        secs: currentSecs,
+        timerCount: (currentMin * 60) + currentSecs,
+        timeLimit: (currentMin * 60) + currentSecs,
+        warning: (this.pomodoroType <= 0 && this.pomodoro.warning !== null) ? this.pomodoro.warning : this.warningThreshold * 60,
+        alert: (this.pomodoroType <= 0 && this.pomodoro.alert !== null) ? this.pomodoro.alert : this.alertThreshold * 60,
+        pomodoroType: this.typePomodoro.type !== -1 ? this.typePomodoro.type : 1,
+        changed: this.changed
       }
       for (const prop in this.pomodoro) {
         this.pomodoro[prop] = pomodoro[prop]
@@ -230,6 +239,7 @@ export default {
       audioFile.play()
       this.$alert(`O seu tempo de ${pomoType} chegou ao fim!`).then(() => {
         audioFile.pause()
+        this.reset()
       })
     }
   }
