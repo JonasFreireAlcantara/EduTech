@@ -7,18 +7,22 @@ import VueApexCharts from 'vue-apexcharts'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import UUID from 'vue-uuid'
 import store from './store'
-import GoogleLogin from 'vue-google-login'
 import VueSimpleAlert from 'vue-simple-alert'
 import './app.scss'
+import GoogleAuth from '@/config/google_oAuth.js'
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
 
-Vue.use(GoogleLogin, {
-  client_id: '621647520574-lm9unrl07tf1rphcs0pr5i399jtp14l1.apps.googleusercontent.com'
-})
+const gauthOption = {
+  client_id: '356262653651-hr7486q88tir6rulnbjmpnqt0qjj5l2o.apps.googleusercontent.com',
+  scope: 'profile email https://www.googleapis.com/auth/calendar',
+  prompt: 'select_account'
+}
+
+Vue.use(GoogleAuth, gauthOption)
 
 Vue.use(VueSimpleAlert)
 

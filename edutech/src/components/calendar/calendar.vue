@@ -58,7 +58,7 @@
         <v-calendar
           ref="calendar"
           v-model="value"
-          :now="'2021-05-30'"
+          :now="value.date"
           color="#FFD400"
           :events="events"
           :type="type"
@@ -105,6 +105,8 @@
 
 <script>
 import EventCard from '../events/event-card'
+import axios from 'axios'
+
 export default {
   data () {
     return {
@@ -119,49 +121,7 @@ export default {
         month: 'Mês',
         week: 'Semana',
         day: 'Dia'
-      },
-      times: [
-        {
-          id: 0,
-          time: '14:00',
-          date: '2021-06-02',
-          visible: true,
-          tasks: [
-            {
-              id: 0,
-              title: 'Math Assignment',
-              label: 'Low',
-              labelColor: '#91a8e3',
-              description: 'Notes: a report should be submitted on google classroom',
-              img: { blank: true, width: 75, height: 75, class: 'm1' }
-            },
-            {
-              id: 1,
-              title: 'Math Assignment',
-              label: 'Low',
-              labelColor: '#91a8e3',
-              description: 'Notes: a report should be submitted on google classroom',
-              img: { blank: true, width: 75, height: 75, class: 'm1' }
-            }
-          ]
-        },
-        {
-          id: 1,
-          time: '18:00',
-          date: '2021-06-07',
-          visible: false,
-          tasks: [
-            {
-              id: 0,
-              title: 'Biology Meeting',
-              label: 'Medium',
-              labelColor: '#ffe14d',
-              description: 'Notes: a report should be submitted on google classroom',
-              img: { blank: true, width: 75, height: 75, class: 'm1' }
-            }
-          ]
-        }
-      ]
+      }
     }
   },
   methods: {
@@ -169,7 +129,7 @@ export default {
       this.value = new Date()
     },
     onContextChange ({ start, end }) {
-      this.getEvents()
+      this.getEvents({ start, end })
       this.updateMonth({ start, end })
     },
     updateMonth ({ start, end }) {
@@ -178,28 +138,37 @@ export default {
       const month = date.toLocaleString('default', { month: 'long' })
       this.currMonth = month + ' ' + date.getFullYear()
     },
-    getEvents () {
+    getRandomColor () {
+      var letters = 'BCDEF'.split('')
+      var color = '#'
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * letters.length)]
+      }
+      return color
+    },
+    async getEvents ({ start, end }) {
       const events = []
-      for (var time of this.times) {
-        for (var task of time.tasks) {
-          const first = new Date(time.date + 'T' + time.time)
-          // first.setTime(time.time)
 
-          events.push({
-            name: task.title,
-            start: first,
-            end: first,
-            color: task.labelColor,
-            timed: true,
-            time: time.time,
-            id: task.id,
-            title: task.title,
-            label: task.label,
-            labelColor: task.labelColor,
-            description: task.description,
-            img: task.img
-          })
-        }
+      var calendar = await axios.get(`https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${start.date}T00%3A00%3A00Z&timeMax=${end.date}T00%3A00%3A00Z`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` }
+        })
+
+      for (var event of calendar.data.items) {
+        events.push({
+          // name: event.summary,
+          start: new Date(event.start.dateTime),
+          end: new Date(event.end.dateTime),
+          color: this.getRandomColor(),
+          timed: true,
+          // time: time.time,
+          id: event.etag,
+          title: event.summary,
+          label: 'Low',
+          labelColor: '#ffe14d',
+          description: event.description,
+          img: { blank: true, width: 75, height: 75, class: 'm1' }
+        })
       }
       this.events = events
     },
