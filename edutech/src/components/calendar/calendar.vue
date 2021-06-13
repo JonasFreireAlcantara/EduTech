@@ -77,6 +77,7 @@
           :close-on-content-click="false"
           :activator="selectedElement"
           offset-x
+          style="margin-top: 5%;"
         >
           <v-card
             color="grey lighten-4"
@@ -155,6 +156,7 @@ export default {
         })
 
       for (var event of calendar.data.items) {
+        console.log(event)
         events.push({
           // name: event.summary,
           start: new Date(event.start.dateTime),
@@ -164,9 +166,9 @@ export default {
           // time: time.time,
           id: event.etag,
           title: event.summary,
-          label: 'Low',
-          labelColor: '#ffe14d',
           description: event.description,
+          hangoutLink: event.hangoutLink,
+          isGoogle: true,
           img: { blank: true, width: 75, height: 75, class: 'm1' }
         })
       }

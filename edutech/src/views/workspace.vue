@@ -2,7 +2,18 @@
   <div>
     <TopComponent :isLogged="true"/>
     <b-container class="margin-top">
-      <h1>{{getWorkspace.name}}</h1>
+      <b-row align-v="center">
+        <b-col cols="1">
+          <b-img width="75" height="75" v-if="getWorkspace.icon" :src="'http://localhost:5000/api/file/'+getWorkspace.icon" rounded="circle" alt="Circle image" blank-color="#777"></b-img>
+          <b-img v-else src="https://wtctravelservices.com/public/uploads/service-6.jpg" alt="Study image" width="70" height="70" rounded="circle" class="m1"></b-img>
+        </b-col>
+        <b-col cols="9">
+          <h1>{{getWorkspace.name}}</h1>
+        </b-col>
+        <b-col cols="2" class="text-right">
+          <b-button variant="outline-danger" @click="deleteWorkspace">Remover</b-button>
+        </b-col>
+      </b-row>
       <hr>
       <NextEvents/>
       <PomodoroModal/>
@@ -90,6 +101,7 @@ import CalendarModal from './calendarModal'
 import Calendar from '../components/calendar/calendar.vue'
 import TopComponent from '../components/top-component.vue'
 import Pomodoro from '../components/pomodoro/Pomodoro'
+import axios from '../variables/variables'
 
 export default ({
   data () {
@@ -139,6 +151,11 @@ export default ({
   },
   mounted () {
     this.$store.dispatch('loadWorkspaces')
+  },
+  methods: {
+    deleteWorkspace: async function () {
+      await axios.delete(`workspace/${this.getWorkspace._id}`).then(() => this.$router.push({ name: 'Workspace' }))
+    }
   }
 })
 </script>
