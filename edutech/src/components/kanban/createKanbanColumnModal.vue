@@ -38,6 +38,7 @@ export default ({
     onSubmit ($event) {
       $event.preventDefault()
       this.$emit('columnCreate', { name: this.kanbanName })
+      this.kanbanName = ''
     }
   }
 

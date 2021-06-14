@@ -83,7 +83,7 @@ exports.getWorkspaceById = function (req, res, next) {
     return res.status(HTTP_STATUS_CODE.BAD_REQUEST).send({ error: 'Id Inválido' });
   }
 
-  workspaceModel.findOne({_id: id}).then(function(workspace){
+  workspaceModel.findOne({_id: id}).populate('columns').populate('tasks').then(function(workspace){
     if (!workspace) {
       return res.status(HTTP_STATUS_CODE.NOT_FOUND).send({ error: 'Workspace não encontrado.' })
     }
@@ -98,7 +98,7 @@ exports.getWorkspaceByOwnerId = function (req, res, next) {
     return res.status(HTTP_STATUS_CODE.BAD_REQUEST).send({ error: 'Id Inválido' });
   }
 
-  workspaceModel.find({owner: ownerId}).then(function(workspace){
+  workspaceModel.find({owner: ownerId}).populate('columns').populate('tasks').then(function(workspace){
     if (!workspace) {
       return res.status(HTTP_STATUS_CODE.NOT_FOUND).send({ error: 'Workspace não encontrado.' })
     }
@@ -122,7 +122,7 @@ exports.createWorkspace = async (req, res) => {
 
 exports.updateWorkspace = function (req, res, next) {
   workspaceModel.findByIdAndUpdate({_id: req.params.id}, req.body).then(function(){
-    workspaceModel.findOne({_id: req.params.id}).then(function(workspace){
+    workspaceModel.findOne({_id: req.params.id}).populate('columns').populate('tasks').then(function(workspace){
       res.send(workspace);
     });
   }).catch(next);

@@ -156,7 +156,6 @@ export default {
         })
 
       for (var event of calendar.data.items) {
-        console.log(event)
         events.push({
           // name: event.summary,
           start: new Date(event.start.dateTime),

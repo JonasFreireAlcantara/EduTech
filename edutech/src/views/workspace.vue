@@ -4,11 +4,11 @@
     <b-container class="margin-top">
       <b-row align-v="center">
         <b-col cols="1">
-          <b-img width="75" height="75" v-if="getWorkspace.icon" :src="'http://localhost:5000/api/file/'+getWorkspace.icon" rounded="circle" alt="Circle image" blank-color="#777"></b-img>
+          <b-img width="75" height="75" v-if="getWorkspaceById(id).icon" :src="'http://localhost:5000/api/file/'+getWorkspaceById(id).icon" rounded="circle" alt="Circle image" blank-color="#777"></b-img>
           <b-img v-else src="https://wtctravelservices.com/public/uploads/service-6.jpg" alt="Study image" width="70" height="70" rounded="circle" class="m1"></b-img>
         </b-col>
         <b-col cols="9">
-          <h1>{{getWorkspace.name}}</h1>
+          <h1>{{getWorkspaceById(id).name}}</h1>
         </b-col>
         <b-col cols="2" class="text-right">
           <b-button variant="outline-danger" @click="deleteWorkspace">Remover</b-button>
@@ -17,7 +17,7 @@
       <hr>
       <NextEvents/>
       <PomodoroModal/>
-      <KanbanModal/>
+      <KanbanModal :workspace="getWorkspaceById(id)"/>
       <CalendarModal/>
       <b-row>
         <b-col md="6" sm="12">
@@ -66,6 +66,11 @@
                 <a v-b-modal.kanbanModal><h2><b-icon icon="arrows-angle-expand"></b-icon></h2></a>
               </b-col>
             </b-row>
+            <b-row class="mt-2 mx-auto">
+              <b-col class="p-0">
+                <Kanban :workspace="getWorkspaceById(id)" origin="workspace" :isMinimized="true"/>
+              </b-col>
+            </b-row>
           </div>
         </b-col>
 
@@ -96,16 +101,19 @@
 import NextEvents from './nextEvents.vue'
 import Event from './event.vue'
 import KanbanModal from './kanbanModal'
+import Kanban from '../components/kanban/Kanban.vue'
 import PomodoroModal from './pomodoroModal'
 import CalendarModal from './calendarModal'
 import Calendar from '../components/calendar/calendar.vue'
 import TopComponent from '../components/top-component.vue'
 import Pomodoro from '../components/pomodoro/Pomodoro'
 import axios from '../variables/variables'
+import { mapGetters } from 'vuex'
 
 export default ({
   data () {
     return {
+      id: this.$route.params.id,
       times: [
         {
           id: 0,
@@ -141,20 +149,18 @@ export default ({
     CalendarModal,
     Calendar,
     Pomodoro,
-    TopComponent
+    TopComponent,
+    Kanban
   },
-  computed: {
-    getWorkspace: function () {
-      var workspace = this.$store.state.workspaces.find(el => el.id === this.$router.history.current.params.id)
-      return workspace
-    }
-  },
+  computed: mapGetters([
+    'getWorkspaceById'
+  ]),
   mounted () {
     this.$store.dispatch('loadWorkspaces')
   },
   methods: {
     deleteWorkspace: async function () {
-      await axios.delete(`workspace/${this.getWorkspace._id}`).then(() => this.$router.push({ name: 'Workspace' }))
+      await axios.delete(`workspace/${this.getWorkspaceById(this.id)._id}`).then(() => this.$router.push({ name: 'Workspace' }))
     }
   }
 })

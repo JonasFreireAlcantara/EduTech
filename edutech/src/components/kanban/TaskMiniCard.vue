@@ -2,22 +2,23 @@
   <div class='task-wrapper bg-white shadow rounded px-3 pt-3 pb-1 border border-white'>
     <TaskCardModal
       :task="task"
+      :origin="origin"
       @saveTask="$emit('saveTask', $event)"
       @deleteTask="$emit('deleteTask', $event)" />
 
     <div class="task-info-wrapper">
       <div class='task-title-resume-wrapper pt-2 pb-4'>
         <div class="task-title-wrapper d-flex justify-content-between">
-          <a v-b-modal="`task${task.id}`"><h5 class='task-title mb-4'>{{task.title}}</h5></a>
+          <a v-b-modal="`${origin}task${task._id}`"><h5 class='task-title mb-4'>{{task.name}}</h5></a>
         </div>
 
         <p class='task-resume'>{{getResume(task)}}</p>
       </div>
 
-      <div>
+      <div v-if="!isMinimized">
         <span class='task-clock-icon'><b-icon icon="clock"></b-icon></span>
         <span class='task-date font-weight-bold ml-2'>
-          {{task.startDate.toLocaleDateString('pt-BR')}} - {{task.endDate.toLocaleDateString('pt-BR')}}
+          {{new Date(task.startDate).toLocaleDateString('pt-BR')}} - {{new Date(task.dueDate).toLocaleDateString('pt-BR')}}
         </span>
       </div>
     </div>
@@ -33,10 +34,12 @@ export default {
     TaskCardModal
   },
   props: {
+    origin: String,
     task: {
       type: Object,
       default: () => ({})
-    }
+    },
+    isMinimized: Boolean
   },
   methods: {
     getResume (task) {

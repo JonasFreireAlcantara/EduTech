@@ -1,11 +1,11 @@
 <template>
-  <b-modal :id="`task${task.id}`" title="Detalhes da Tarefa" size="xl" hide-footer header-class="text-dark" header-close-content="<h2>&times;</h2>" scrollable>
+  <b-modal :id="`${origin}task${task._id}`" title="Detalhes da Tarefa" size="xl" hide-footer header-class="text-dark" header-close-content="<h2>&times;</h2>" scrollable>
     <b-container fluid>
       <div class="container">
 
         <div class="row mt-5 d-flex align-items-center">
-          <h1 class='col-11 card-title text-center' v-show="!editMode">{{task.title}}</h1>
-          <input class="card-title-input col-11 card-title text-center border-black" type="text" v-show="editMode" v-model="task.title">
+          <h1 class='col-11 card-title text-center' v-show="!editMode">{{task.name}}</h1>
+          <input class="card-title-input col-11 card-title text-center border-black" type="text" v-show="editMode" v-model="task.name">
           <h5 class="col-1 d-flex justify-content-center" @click="editMode = !editMode"><b-icon class="card-edit-icon rounded" icon="pencil-square"></b-icon></h5>
         </div>
 
@@ -18,7 +18,7 @@
           <div class='row'>
             <span class='card-clock-icon'><b-icon icon="clock"></b-icon></span>
             <span class='card-date font-weight-bold ml-2'>
-              {{task.startDate.toLocaleDateString('pt-BR')}} - {{task.endDate.toLocaleDateString('pt-BR')}}
+              {{new Date(task.startDate).toLocaleDateString('pt-BR')}} - {{new Date(task.dueDate).toLocaleDateString('pt-BR')}}
             </span>
           </div>
           <div class="row" v-show="editMode">
@@ -28,7 +28,7 @@
             </div>
             <div class="col-6 col-xl-3">
               <label for="example-datepicker">Data de Fim</label>
-              <b-form-datepicker v-model="task.endDate" class="mb-2" value-as-date></b-form-datepicker>
+              <b-form-datepicker v-model="task.dueDate" class="mb-2" value-as-date></b-form-datepicker>
             </div>
           </div>
         </div>
@@ -58,7 +58,7 @@
           <div class="card-todo mt-3">
             <ToDoList
               list-name="Tarefas"
-              v-bind:todos="task.todos"
+              v-bind:todos="task.toDos"
               @todoChange='handleTodoChange(task, $event)' />
           </div>
         </div>
@@ -86,6 +86,7 @@ export default ({
     }
   },
   props: {
+    origin: String,
     task: {
       type: Object,
       default: () => ({})

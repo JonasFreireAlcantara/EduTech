@@ -30,6 +30,9 @@ export default new Vuex.Store({
     authStatus: state => state.status,
     workspaces: state => {
       return state.workspaces
+    },
+    getWorkspaceById: state => (id) => {
+      return state.workspaces.find(el => el.id === id)
     }
   },
   mutations: {
