@@ -133,7 +133,11 @@ export default {
       if (!del) {
         return
       }
-      this.setLoading(2000)
+      this.setLoading(3000)
+      const tasksOfColumn = this.workspace.tasks.filter(task => task.column === column._id)
+      tasksOfColumn.forEach(task => {
+        axios.delete(`task/${task._id}`, task)
+      })
       await axios.delete(`column/${column._id}`).then((res) => { this.workspace.columns = this.workspace.columns.filter(el => el._id !== column._id) })
       await axios.put(`workspace/${this.workspace._id}`, this.workspace).then(() => this.$store.dispatch('loadWorkspaces'))
     },
