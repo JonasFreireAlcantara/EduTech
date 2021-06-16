@@ -10,7 +10,8 @@ var task = new Schema({
   icon: Buffer,
   label: {type: ObjectId, ref: 'Label'},
   toDos: [{type: ObjectId, ref: 'ToDoItem'}],
-  column: {type: ObjectId, ref: 'Column'}
+  column: {type: ObjectId, ref: 'Column'},
+  columnIndex: Number
 });
 
 module.exports = mongoose.model('Task', task);

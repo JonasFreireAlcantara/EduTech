@@ -2,6 +2,10 @@
   <div id='kanban'>
     <CreateKanbanColumnModal @columnCreate="handleColumnCreate" />
 
+    <div :class="{'spinner': true, 'spinner-active': loading}">
+      <b-spinner type="grow"></b-spinner>
+    </div>
+
     <div class='mt-4'>
       <div class='d-flex justify-content-start pb-5' style="overflow-x: auto;">
         <div
@@ -14,7 +18,13 @@
             <h5 class='kanban-column-delete-icon ml-2 rounded py-1 px-1' @click="handleColumnDelete(column)"><b-icon icon="trash-fill"></b-icon></h5>
           </div>
 
-          <draggable :list='getTasksByColumn(column)' :animation='200' ghost-class='ghost-card' group='tasks' :emptyInsertThreshold="100">
+          <draggable
+              :list='getTasksByColumn(column)'
+              :animation='200'
+              ghost-class='ghost-card'
+              group='tasks'
+              :emptyInsertThreshold="100"
+              @change="handlePositionChange(column, $event)">
             <task-mini-card
               v-for='(task) in getTasksByColumn(column)'
               :key='task._id'
@@ -66,7 +76,51 @@ export default {
     log: function (evt) {
       window.console.log(this.workspace.columns)
     },
+    setLoading (timeSleep) {
+      this.loading = true
+      setTimeout(function () { this.loading = false }.bind(this), timeSleep)
+    },
+    async handlePositionChange (column, $event) {
+      const { added, moved, removed } = $event
+
+      if (added) {
+        this.setLoading(2000)
+        const { element, newIndex } = added
+        const tasksOfColumn = this.workspace.tasks.filter(task => task.column === column._id)
+        tasksOfColumn.sort((first, second) => first.columnIndex - second.columnIndex)
+        element.column = column._id
+        tasksOfColumn.splice(newIndex, 0, element)
+        tasksOfColumn.forEach((task, index) => {
+          task.columnIndex = index
+          axios.put(`task/${task._id}`, task)
+        })
+        await axios.put(`workspace/${this.workspace._id}`, this.workspace).then(() => this.$store.dispatch('loadWorkspaces'))
+      } else if (moved) {
+        this.setLoading(2000)
+        const { element, oldIndex, newIndex } = moved
+        const tasksOfColumn = this.workspace.tasks.filter(task => task.column === column._id)
+        tasksOfColumn.sort((first, second) => first.columnIndex - second.columnIndex)
+        tasksOfColumn.splice(oldIndex, 1)
+        tasksOfColumn.splice(newIndex, 0, element)
+        tasksOfColumn.forEach((task, index) => {
+          task.columnIndex = index
+          axios.put(`task/${task._id}`, task)
+        })
+        await axios.put(`workspace/${this.workspace._id}`, this.workspace).then(() => this.$store.dispatch('loadWorkspaces'))
+      } else if (removed) {
+        const { oldIndex } = removed
+        const tasksOfColumn = this.workspace.tasks.filter(task => task.column === column._id)
+        tasksOfColumn.sort((first, second) => first.columnIndex - second.columnIndex)
+        tasksOfColumn.splice(oldIndex, 1)
+        tasksOfColumn.forEach((task, index) => {
+          task.columnIndex = index
+          axios.put(`task/${task._id}`, task)
+        })
+        await axios.put(`workspace/${this.workspace._id}`, this.workspace).then(() => this.$store.dispatch('loadWorkspaces'))
+      }
+    },
     async handleColumnCreate ($event) {
+      this.setLoading(2000)
       var column = {
         name: $event.name
       }
@@ -79,13 +133,16 @@ export default {
       if (!del) {
         return
       }
+      this.setLoading(2000)
       await axios.delete(`column/${column._id}`).then((res) => { this.workspace.columns = this.workspace.columns.filter(el => el._id !== column._id) })
       await axios.put(`workspace/${this.workspace._id}`, this.workspace).then(() => this.$store.dispatch('loadWorkspaces'))
     },
     async handleTaskDelete (task) {
+      this.setLoading(2000)
       await axios.delete(`task/${task._id}`).then(() => { this.$store.dispatch('loadWorkspaces') })
     },
     async handleTaskCreate (column) {
+      this.setLoading(2000)
       const newTask = {
         name: 'Nova Tarefa',
         description: '',
@@ -94,7 +151,8 @@ export default {
         icon: null,
         label: null,
         toDos: [],
-        column: column._id
+        column: column._id,
+        columnIndex: this.getTasksByColumn(column).length
       }
       await axios.post('task', newTask).then((res) => { this.workspace.tasks.push(res.data._id) })
       await axios.put(`workspace/${this.workspace._id}`, this.workspace).then(() => this.$store.dispatch('loadWorkspaces'))
@@ -103,18 +161,42 @@ export default {
       await axios.put(`task/${task._id}`, task).then(() => { this.$store.dispatch('loadWorkspaces') })
     },
     getTasksByColumn (column) {
-      return this.workspace.tasks.filter(el => el.column === column._id)
+      const tasks = this.workspace.tasks.filter(el => el.column === column._id)
+      tasks.sort((first, second) => first.columnIndex - second.columnIndex)
+      return tasks
     }
   },
   data () {
     return {
-      id: this.$route.params.id
+      id: this.$route.params.id,
+      loading: false
     }
   }
 }
 </script>
 
 <style scoped>
+.spinner {
+  opacity: 0;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  background-color: rgba(255,255,255,0.9);
+  transition: opacity 0.1s ease-out;
+  z-index: 10;
+}
+
+.spinner-active {
+  opacity: 1;
+  width: 100%;
+  height: 100%;
+}
+
 .kanban-column {
   box-shadow: 0px 0px 10px rgba(0,0,0,0.6);
 }
