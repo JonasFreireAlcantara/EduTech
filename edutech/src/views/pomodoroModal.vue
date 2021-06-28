@@ -4,6 +4,7 @@
       <b-tab title="Pomodoro" title-link-class="tab" active>
         <Pomodoro
           :minutes=25
+          :seconds=0
           :pomodoroType=1
         />
       </b-tab>
@@ -11,6 +12,7 @@
       <b-tab title="Pausa Curta" title-link-class="tab">
         <Pomodoro
           :minutes=5
+          :seconds=0
           :pomodoroType=2
         />
       </b-tab>
@@ -18,6 +20,7 @@
       <b-tab title="Pausa Longa" title-link-class="tab">
         <Pomodoro
           :minutes=15
+          :seconds=0
           :pomodoroType=3
         />
       </b-tab>

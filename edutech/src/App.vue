@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <div id="global-pomo">
-    <Pomodoro :minutes=25 :pomodoroType=-1 />
+    <Pomodoro :minutes=25 :seconds=0 :pomodoroType=-1 />
     </div>
     <router-view/>
   </v-app>

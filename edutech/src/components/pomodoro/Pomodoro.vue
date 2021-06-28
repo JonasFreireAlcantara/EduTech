@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import axios from '../../variables/variables'
 const audioFile = new Audio(require('../../assets/audio/alarm.mp3'))
 
 const FULL_DASH_ARRAY = 283
@@ -91,10 +93,13 @@ export default {
       type: Number,
       default: 1
     }
-
   },
   created: function () {
     audioFile.loop = true
+    window.addEventListener('beforeunload', this.unloadHandler)
+  },
+  beforeDestroy: function () {
+    window.removeEventListener('beforeunload', this.unloadHandler)
   },
   computed: {
     currentTime: function () {
@@ -139,7 +144,8 @@ export default {
     },
     timerCount () {
       return this.changed.count
-    }
+    },
+    ...mapGetters(['getWorkspaceById'])
   },
   watch: {
     running (value) {
@@ -159,13 +165,44 @@ export default {
     }
   },
   methods: {
-
+    unloadHandler (event) {
+      if (this.pomodoroType === -1 && this.pomodoro.running === true) {
+        event.preventDefault()
+        event.returnValue = ''
+        this.endPomodoro()
+      }
+    },
+    async createPomodoro () {
+      var pomodoroValues = {
+        StartingSeconds: this.seconds,
+        StartingMinutes: this.minutes,
+        CreatedOn: new Date()
+      }
+      await axios.post('pomodoro', pomodoroValues).then(async (res) => {
+        var workspace = this.getWorkspaceById(this.pomodoro.workspaceId)
+        workspace.pomodoros.push(res.data._id)
+        this.pomodoro.pomodoroId = res.data._id
+        await axios.put(`workspace/${workspace._id}`, workspace).then(() => this.$store.dispatch('loadWorkspaces'))
+      })
+    },
+    async endPomodoro () {
+      var pomodoro = await axios.get(`pomodoro/${this.pomodoro.pomodoroId}`)
+      pomodoro = pomodoro.data
+      pomodoro.EndedOn = new Date()
+      pomodoro.RemainingMinutes = this.pomodoro.min
+      pomodoro.RemainingSeconds = this.pomodoro.secs
+      await axios.put(`pomodoro/${this.pomodoro.pomodoroId}`, pomodoro)
+    },
     incrementChangedVariable: function () {
       this.changed.count += 1
     },
-    run: function () {
-      if (this.loadToGlobal.type !== this.typePomodoro.type || this.typePomodoro.type === -1) {
+    run: async function () {
+      if (this.loadToGlobal.type !== this.typePomodoro.type || this.typePomodoro.type === -1 || this.pomodoro.workspaceId !== this.$route.params.id || !this.pomodoro.pomodoroId) {
+        if (this.pomodoro.running === true) {
+          await this.pause()
+        }
         this.loadValuesToGlobal()
+        await this.createPomodoro()
       }
 
       if (this.pomodoro.paused || this.pomodoro.stopped) {
@@ -180,16 +217,22 @@ export default {
         }
       }
     },
-    pause: function () {
+    pause: async function () {
       if (this.loadToGlobal.type === this.typePomodoro.type) {
+        if (this.pomodoro.running === true) {
+          await this.endPomodoro()
+        }
         this.pomodoro.running = false
         this.runningLocal = this.pomodoro.running
         this.pomodoro.paused = true
         this.pomodoro.stopped = false
       }
     },
-    reset: function () {
+    reset: async function () {
       if (this.loadToGlobal.type === this.typePomodoro.type) {
+        if (this.pomodoro.running === true) {
+          await this.endPomodoro()
+        }
         this.loadValuesToGlobal()
         this.runningLocal = this.pomodoro.running
       }
@@ -220,7 +263,8 @@ export default {
         warning: (this.pomodoroType <= 0 && this.pomodoro.warning !== null) ? this.pomodoro.warning : this.warningThreshold * 60,
         alert: (this.pomodoroType <= 0 && this.pomodoro.alert !== null) ? this.pomodoro.alert : this.alertThreshold * 60,
         pomodoroType: this.typePomodoro.type !== -1 ? this.typePomodoro.type : 1,
-        changed: this.changed
+        changed: this.changed,
+        workspaceId: this.$route.params.id
       }
       for (const prop in this.pomodoro) {
         this.pomodoro[prop] = pomodoro[prop]

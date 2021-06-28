@@ -21,7 +21,9 @@ export default new Vuex.Store({
       warning: null,
       alert: null,
       pomodoroType: 1,
-      changed: { count: 0 }
+      changed: { count: 0 },
+      workspaceId: null,
+      pomodoroId: null
     },
     workspaces: []
   },

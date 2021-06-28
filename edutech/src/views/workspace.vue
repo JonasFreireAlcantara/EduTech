@@ -86,7 +86,7 @@
             </b-row>
             <b-row class="mt-2 mx-auto">
               <b-col class="p-0">
-                <Pomodoro :minutes=25 :pomodoroType=0 />
+                <Pomodoro :minutes=25 :seconds=0 :pomodoroType=0 />
               </b-col>
             </b-row>
           </div>
