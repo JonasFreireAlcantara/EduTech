@@ -18,17 +18,19 @@
           <div class='row'>
             <span class='card-clock-icon'><b-icon icon="clock"></b-icon></span>
             <span class='card-date font-weight-bold ml-2'>
-              {{new Date(task.startDate).toLocaleDateString('pt-BR')}} - {{new Date(task.dueDate).toLocaleDateString('pt-BR')}}
+              {{new Date(task.startDate).toLocaleDateString('pt-BR')}} {{startTime}} - {{new Date(task.dueDate).toLocaleDateString('pt-BR')}} {{dueTime}}
             </span>
           </div>
           <div class="row" v-show="editMode">
             <div class="col-6 col-xl-3">
               <label for="example-datepicker">Data de Início</label>
               <b-form-datepicker v-model="task.startDate" class="mb-2" value-as-date></b-form-datepicker>
+              <b-form-timepicker v-model="startTime" locale="pt-BR"></b-form-timepicker>
             </div>
             <div class="col-6 col-xl-3">
               <label for="example-datepicker">Data de Fim</label>
               <b-form-datepicker v-model="task.dueDate" class="mb-2" value-as-date></b-form-datepicker>
+              <b-form-timepicker v-model="dueTime" locale="pt-BR"></b-form-timepicker>
             </div>
           </div>
         </div>
@@ -82,7 +84,9 @@ export default ({
   },
   data () {
     return {
-      editMode: false
+      editMode: false,
+      startTime: new Date(this.task.startDate).toLocaleTimeString(),
+      dueTime: new Date(this.task.dueDate).toLocaleTimeString()
     }
   },
   props: {
@@ -99,6 +103,14 @@ export default ({
     },
     handleSaveTask () {
       this.editMode = !this.editMode
+      var startDate = new Date(this.task.startDate)
+      var time = this.startTime.split(':')
+      startDate.setHours(parseInt(time[0]), parseInt(time[1]))
+      this.task.startDate = startDate
+      var dueDate = new Date(this.task.dueDate)
+      time = this.dueTime.split(':')
+      dueDate.setHours(parseInt(time[0]), parseInt(time[1]))
+      this.task.dueDate = dueDate
       this.$emit('saveTask', this.task)
     },
     async handleDeleteTask () {

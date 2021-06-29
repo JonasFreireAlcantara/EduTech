@@ -18,9 +18,9 @@
             </b-button>
           </b-card-header>
           <b-collapse :id="'accordion-'+uuid" :accordion="'my-accordion-'+accordion" v-model="isExpanded" role="tabpanel" >
-            <div v-for="(task,index) in time.tasks" :key="task.id">
+            <div v-for="(task,index) in time.tasks" :key="task._id">
               <EventCard :task="task" :isMinimized="isMinimized"/>
-              <hr v-if="index < time.tasks.length-1" class="text-dark">
+              <hr v-if="index < time.length-1" class="text-dark">
             </div>
           </b-collapse>
         </b-card>
@@ -40,7 +40,7 @@ export default ({
     }
   },
   props: {
-    time: Object,
+    time: Array,
     hasMargin: Boolean,
     isTime: Boolean,
     accordion: String,

@@ -6,7 +6,7 @@
       </b-col>
       <b-col :md="isMinimized? '8' :'6'" sm="12">
         <b-card-text class="text-dark">
-          <h4>{{task.title}}<span v-if="task.label" class="task-label" :style="'background-color: '+task.labelColor+';'">{{task.label}}</span></h4>
+          <h4>{{task.name}}<span v-if="task.label" class="task-label" :style="'background-color: '+task.labelColor+';'">{{task.label}}</span></h4>
         </b-card-text>
         <b-card-text class="text-dark"><span v-if="task.hangoutLink"><b-button :href="task.hangoutLink" target="_blank" class="text-dark" size="sm">Abrir no Meet</b-button></span><span v-html="task.description"></span></b-card-text>
       </b-col>

@@ -135,8 +135,7 @@ export default {
     },
     updateMonth ({ start, end }) {
       const date = new Date(end.date)
-      date.setMonth(date.getMonth())
-      const month = date.toLocaleString('default', { month: 'long' })
+      const month = date.toLocaleString('default', { month: 'long', timeZone: 'UTC' })
       this.currMonth = month + ' ' + date.getFullYear()
     },
     getRandomColor () {

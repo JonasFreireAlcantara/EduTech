@@ -15,7 +15,7 @@
         </b-col>
       </b-row>
       <hr>
-      <NextEvents/>
+      <NextEvents :workspace="getWorkspaceById(id)"/>
       <PomodoroModal/>
       <KanbanModal :workspace="getWorkspaceById(id)"/>
       <CalendarModal/>
@@ -31,7 +31,7 @@
               </b-col>
             </b-row>
             <b-row class="mt-2 mx-auto">
-              <div v-for="(time, index) in times" :key="time.id" class="w-100">
+              <div v-for="(time, index) in getTimes" :key="index" class="w-100">
                 <Event :time="time" :hasMargin="index !== 0" :isTime="true" :isMinimized="true" accordion="0"></Event>
               </div>
             </b-row>
@@ -152,15 +152,38 @@ export default ({
     TopComponent,
     Kanban
   },
-  computed: mapGetters([
-    'getWorkspaceById'
-  ]),
+  computed: {
+    ...mapGetters([
+      'getWorkspaceById'
+    ]),
+    getTimes: function () {
+      var arr = this.groupBy(this.getWorkspaceById(this.id).tasks, 'dueDate')
+      var times = []
+      for (var property in arr) {
+        var time = {
+          time: new Date(property).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+          date: new Date(property).toLocaleDateString('pt-BR'),
+          visible: false,
+          tasks: arr[property]
+        }
+        times.push(time)
+        break
+      }
+      return times
+    }
+  },
   mounted () {
     this.$store.dispatch('loadWorkspaces')
   },
   methods: {
     deleteWorkspace: async function () {
       await axios.delete(`workspace/${this.getWorkspaceById(this.id)._id}`).then(() => this.$router.push({ name: 'Workspace' }))
+    },
+    groupBy: function (xs, key) {
+      return xs.reduce(function (rv, x) {
+        (rv[x[key]] = rv[x[key]] || []).push(x)
+        return rv
+      }, {})
     }
   }
 })
