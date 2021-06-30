@@ -2,7 +2,7 @@
   <b-card-body style="max-height: 350px; overflow-y: auto;">
     <b-row>
       <b-col :md="isMinimized? '3' :'2'" sm="12" class="text-center">
-        <img :src="task.img" class="left" height="75" width="75"/>
+        <b-img width="75" height="75" v-if="task.icon" :src="'http://localhost:5000/api/file/'+task.icon"></b-img>
       </b-col>
       <b-col :md="isMinimized? '8' :'6'" sm="12">
         <b-card-text class="text-dark">
@@ -31,7 +31,7 @@ export default ({
   methods: {
     changeImg: function () {
       if (this.task.isGoogle) {
-        this.task.img = this.googleIcon
+        this.task.icon = this.googleIcon
       }
     }
   },

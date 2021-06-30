@@ -159,15 +159,25 @@ export default ({
     getTimes: function () {
       var arr = this.groupBy(this.getWorkspaceById(this.id).tasks, 'dueDate')
       var times = []
+      arr = Object.keys(arr).sort().reduce(
+        (obj, key) => {
+          obj[key] = arr[key]
+          return obj
+        },
+        {}
+      )
       for (var property in arr) {
-        var time = {
-          time: new Date(property).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
-          date: new Date(property).toLocaleDateString('pt-BR'),
-          visible: false,
-          tasks: arr[property]
+        var curr = new Date()
+        if (this.withoutTime(new Date(property)).valueOf() >= this.withoutTime(curr).valueOf()) {
+          var time = {
+            time: new Date(property).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+            date: new Date(property).toLocaleDateString('pt-BR'),
+            visible: false,
+            tasks: arr[property]
+          }
+          times.push(time)
+          break
         }
-        times.push(time)
-        break
       }
       return times
     }
@@ -184,6 +194,11 @@ export default ({
         (rv[x[key]] = rv[x[key]] || []).push(x)
         return rv
       }, {})
+    },
+    withoutTime: function (dateTime) {
+      var date = new Date(dateTime)
+      date.setHours(0, 0, 0, 0)
+      return date
     }
   }
 })

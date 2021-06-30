@@ -74,6 +74,13 @@ export default ({
     getTimes: function () {
       var arr = this.groupBy(this.workspace.tasks, 'dueDate')
       var times = []
+      arr = Object.keys(arr).sort().reduce(
+        (obj, key) => {
+          obj[key] = arr[key]
+          return obj
+        },
+        {}
+      )
       for (var property in arr) {
         if (this.withoutTime(new Date(property)).valueOf() === this.withoutTime(new Date()).valueOf()) {
           var time = {
@@ -90,6 +97,13 @@ export default ({
     getDatesThisWeek: function () {
       var arr = this.groupBy(this.workspace.tasks, 'dueDate')
       var times = []
+      arr = Object.keys(arr).sort().reduce(
+        (obj, key) => {
+          obj[key] = arr[key]
+          return obj
+        },
+        {}
+      )
       for (var property in arr) {
         var curr = new Date()
         var first = new Date(curr.setDate(curr.getDate() - curr.getDay()))
@@ -110,6 +124,13 @@ export default ({
     getDatesThisMonth: function () {
       var arr = this.groupBy(this.workspace.tasks, 'dueDate')
       var times = []
+      arr = Object.keys(arr).sort().reduce(
+        (obj, key) => {
+          obj[key] = arr[key]
+          return obj
+        },
+        {}
+      )
       for (var property in arr) {
         var curr = new Date()
         if (this.withoutTime(new Date(property)).getMonth() === this.withoutTime(curr).getMonth()) {

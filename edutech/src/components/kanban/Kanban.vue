@@ -162,7 +162,25 @@ export default {
       await axios.put(`workspace/${this.workspace._id}`, this.workspace).then(() => this.$store.dispatch('loadWorkspaces'))
     },
     async handleTaskSave (task) {
-      await axios.put(`task/${task._id}`, task).then(() => { this.$store.dispatch('loadWorkspaces') })
+      var formData = new FormData()
+      var imagefile = task.icon
+      formData.append('file', imagefile)
+      formData.append('_id', task._id)
+      formData.append('name', task.name)
+      formData.append('description', task.description)
+      formData.append('startDate', task.startDate)
+      formData.append('dueDate', task.dueDate)
+      formData.append('label', task.label)
+      formData.append('toDos', task.toDos)
+      formData.append('column', task.column)
+      formData.append('columnIndex', task.columnIndex)
+      console.log(formData)
+      await axios.put(`task/${task._id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(() => { this.$store.dispatch('loadWorkspaces') })
+      /* await axios.put(`task/${task._id}`, task).then(() => { this.$store.dispatch('loadWorkspaces') }) */
     },
     getTasksByColumn (column) {
       const tasks = this.workspace.tasks.filter(el => el.column === column._id)

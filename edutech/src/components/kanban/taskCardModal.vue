@@ -4,9 +4,24 @@
       <div class="container">
 
         <div class="row mt-5 d-flex align-items-center">
-          <h1 class='col-11 card-title text-center' v-show="!editMode">{{task.name}}</h1>
-          <input class="card-title-input col-11 card-title text-center border-black" type="text" v-show="editMode" v-model="task.name">
-          <h5 class="col-1 d-flex justify-content-center" @click="editMode = !editMode"><b-icon class="card-edit-icon rounded" icon="pencil-square"></b-icon></h5>
+          <b-col cols="3" class="text-right">
+            <b-form-group
+              id="imageLabel"
+              label=""
+              label-for="iconInput"
+            >
+              <b-link class="notify-badge shadow" v-show="editMode" @click="selectImage"><b-icon icon="pencil-square"></b-icon></b-link>
+              <img v-if="tempURL===null && !task.icon" :src="defaultIcon" width="150" height="150"/>
+              <b-img width="150" height="150" v-if="task.icon && tempURL===null" :src="'http://localhost:5000/api/file/'+task.icon"></b-img>
+              <b-img v-if="tempURL!==null" id="iconInput" :src="tempURL" width="150" height="150"></b-img>
+              <b-form-file id="fileInput" name="file" :value="file" class="invisible" plain accept="image/*" @change="changeImage"></b-form-file>
+            </b-form-group>
+          </b-col>
+          <b-col cols="6" class="text-center">
+            <h1 class='card-title' v-show="!editMode">{{task.name}}</h1>
+            <input class="card-title-input card-title text-center border-black" type="text" v-show="editMode" v-model="task.name">
+          </b-col>
+          <h5 class="col-3 d-flex justify-content-center" title="Editar" @click="editMode = !editMode"><b-icon class="card-edit-icon rounded" icon="pencil-square"></b-icon></h5>
         </div>
 
         <div class="row py-3"><hr class="col-12"></div>
@@ -86,7 +101,10 @@ export default ({
     return {
       editMode: false,
       startTime: new Date(this.task.startDate).toLocaleTimeString(),
-      dueTime: new Date(this.task.dueDate).toLocaleTimeString()
+      dueTime: new Date(this.task.dueDate).toLocaleTimeString(),
+      defaultIcon: require('../../assets/iconPlaceholder.png'),
+      file: null,
+      tempURL: null
     }
   },
   props: {
@@ -119,6 +137,24 @@ export default ({
         return
       }
       this.$emit('deleteTask', this.task)
+    },
+    selectImage () {
+      document.getElementById('fileInput').click()
+    },
+    changeImage (event) {
+      var img = new Image()
+      img.onload = () => {
+        if (this.width > 800 || this.height > 800) {
+          alert('Por favor envie imagens de até 800px de largura ou altura')
+        } else {
+          this.updateLocalVar(event.target.files[0])
+        }
+      }
+      img.src = window.URL.createObjectURL(event.target.files[0])
+    },
+    updateLocalVar (file) {
+      this.tempURL = URL.createObjectURL(file)
+      this.task.icon = file
     }
   }
 })
@@ -170,5 +206,16 @@ export default ({
     background-color: #584188;
     color: white;
   }
+
+  .notify-badge{
+    position: absolute;
+    right:1rem;
+    top:1rem;
+    text-align: center;
+    background-color: rgb(253, 253, 253);
+    border-radius: 30px 30px 30px 30px;
+    padding:5px 10px;
+    font-size:20px;
+}
 
 </style>

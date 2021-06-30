@@ -148,8 +148,30 @@ exports.createTask = function (req, res, next) {
   }).catch(next);
 };
 
-exports.updateTask = function (req, res, next) {
-  taskModel.findByIdAndUpdate({_id: req.params.id}, req.body).then(function(){
+exports.updateTask = async (req, res, next) => {
+  await upload(req, res);
+  if (req.file && req.file.id) {
+    req.body.icon = req.file.id;
+  }
+  obj = {
+    _id: req.body._id,
+    name: req.body.name,
+    description: req.body.description,
+    startDate: new Date(req.body.startDate),
+    dueDate: new Date(req.body.dueDate),
+    icon: req.body.icon,
+    label: null,
+    column: req.body.column,
+    columnIndex: parseInt(req.body.columnIndex),
+    toDos: [],
+    __v: 0
+  }
+  console.log(typeof obj)
+  console.log(req.params.id)
+  taskModel.findOne({_id: req.params.id}).then(function(task){
+    console.log(task);
+  });
+  taskModel.findByIdAndUpdate({_id: req.params.id}, obj).then(function(){
     taskModel.findOne({_id: req.params.id}).then(function(task){
       res.send(task);
     });
