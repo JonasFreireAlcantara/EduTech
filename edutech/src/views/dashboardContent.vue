@@ -35,7 +35,7 @@
         </b-col>
       </b-row>
 
-      <b-row :justify="alignCenter" class="text-center">
+      <b-row align-content="center" justify="center" class="text-center">
         <strong>Dias</strong>
       </b-row>
   </div>
@@ -43,12 +43,17 @@
 
 <script>
 export default {
+  data () {
+    return {
+      alignCenter: 'center'
+    }
+  },
   props: {
     actualWorkspace: String,
     progress: Number,
     value: Number,
     options: Object,
-    series: Object
+    series: Array
   }
 }
 </script>
