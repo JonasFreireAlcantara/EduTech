@@ -6,7 +6,9 @@
       class="nav"
       style="z-index:99;"
     >
-      <v-app-bar-nav-icon v-if="isLogged" color="#FFF" @click="sendData(true, false)"/>
+    <!-- A funcionalidade da barra na esquerda não funcionava como esperado, por conta disso desativando a funcionalidade
+        Para reativar corretamente utilizar "v-if="isLogged"" -->
+      <v-app-bar-nav-icon v-show="false" color="#FFF" @click="sendData(true, false)"/>
 
       <v-spacer></v-spacer>
       <v-col>
