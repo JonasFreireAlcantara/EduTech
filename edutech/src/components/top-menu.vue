@@ -31,7 +31,7 @@
           mdi-account-circle-outline
         </v-icon>
         <v-avatar v-else>
-          <img :src="userIcon" :alt="userName">
+          <img :src="userIcon" :alt="userName" :title="userName">
         </v-avatar>
       </v-btn>
     </v-app-bar>
@@ -56,10 +56,10 @@ export default {
   },
   created: function () {
     if (gapi.auth2) {
-      const auth = gapi.auth2.init()
+      const auth = gapi.auth2.getAuthInstance()
       if (auth.isSignedIn.get()) {
-        this.userIcon = auth.currentUser.get().getBasicProfile().uK
-        this.userName = auth.currentUser.get().getBasicProfile().Ue
+        this.userIcon = auth.currentUser.get().getBasicProfile().getImageUrl()
+        this.userName = auth.currentUser.get().getBasicProfile().getName()
       }
     }
   }

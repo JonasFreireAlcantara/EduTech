@@ -45,7 +45,7 @@ export default {
 <style scoped>
   @media (min-width: 768px) {
     .row-cols-md-3 > * {
-      flex: 0 0 33.3333333333%!important;
+      flex: 0 0 33.3333333333% !important;
     }
   }
   .component-bg {
