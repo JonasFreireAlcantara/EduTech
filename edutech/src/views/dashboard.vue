@@ -1,7 +1,8 @@
 <template>
   <div>
     <TopComponent :isLogged="true"/>
-    <DashHeader @actualWorkspace="actualWorkspace = $event"/>
+    <DashHeader @actualWorkspace="actualWorkspace = $event"
+      @noWorkspace="noWorkspaceMessage = $event"/>
 
     <div class="h-line"></div>
 
@@ -13,7 +14,7 @@
         :series="series"/>
     </div>
     <div v-else>
-      <h3 class="center__h3">É preciso ter ao menos um workspace para visualizar os status dos seus workspaces</h3>
+      <h3 class="center__h3">{{ noWorkspaceMessage }}</h3>
     </div>
     
   </div>
@@ -39,6 +40,7 @@ export default {
     return {
       actualWorkspace: null,
       progress: 70,
+      noWorkspaceMessage: '',
       options: {
         colors: ['#541388'],
         chart: {
