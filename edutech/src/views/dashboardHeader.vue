@@ -99,14 +99,18 @@ export default {
       actualWorkspace: null
     }
   },
-  created: function () {
-    const workspaces = this.getWorkspaceNames
+  created: async function () {
+    let workspaces = this.getWorkspaceNames
+    if (workspaces.length === 0) {
+      await this.$store.dispatch('loadWorkspaces')
+      workspaces = this.getWorkspaceNames
+    }
     this.actualWorkspace = workspaces.length > 0 ? workspaces[0] : null
     this.$emit('actualWorkspace', this.actualWorkspace)
   },
   computed: {
     getWorkspaceNames: function () {
-      var workList = []
+      const workList = []
       this.$store.state.workspaces.forEach(element => {
         workList.push(element.name)
       })

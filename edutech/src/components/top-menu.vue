@@ -37,30 +37,19 @@
     </v-app-bar>
 </template>
 
-<script src="https://apis.google.com/js/platform.js"></script>
-
 <script>
 export default {
   data: () => ({
-    group: null,
-    userIcon: null,
-    userName: null
+    group: null
   }),
   props: {
-    isLogged: Boolean
+    isLogged: Boolean,
+    userIcon: String,
+    userName: String
   },
   methods: {
     sendData: function (work, profile) {
       this.$emit('newdata', [work, profile])
-    }
-  },
-  created: function () {
-    if (gapi.auth2) {
-      const auth = gapi.auth2.getAuthInstance()
-      if (auth.isSignedIn.get()) {
-        this.userIcon = auth.currentUser.get().getBasicProfile().getImageUrl()
-        this.userName = auth.currentUser.get().getBasicProfile().getName()
-      }
     }
   }
 }

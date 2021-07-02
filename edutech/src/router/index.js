@@ -19,7 +19,7 @@ const routes = [
   },
   {
     path: '/workspace/:id',
-    name: 'Workspace',
+    name: 'WorkspaceItem',
     component: Workspace
   },
   {

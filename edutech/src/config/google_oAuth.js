@@ -126,8 +126,8 @@ function installGoogleAuthPlugin(Vue, options) {
     GoogleAuthConfig = Object.assign(GoogleAuthDefaultConfig, options)
     if (options.scope) GoogleAuthConfig.scope = options.scope
     if (options.prompt) prompt = options.prompt
-    if (!options.clientId) {
-      console.warn('clientId is required')
+    if (!options.client_id) {
+      console.warn('client_id is required')
     }
   } else {
     console.warn('invalid option type. Object type accepted only')

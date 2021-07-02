@@ -32,21 +32,19 @@
   </v-navigation-drawer>
 </template>
 
-<script src="https://apis.google.com/js/platform.js"></script>
-
 <script>
 export default {
   props: {
     drawer: {
       type: Boolean,
       default: false
-    }
+    },
+    userName: String
   },
   data: () => {
     return {
       drawerOpen: false,
-      group: null,
-      userName: null
+      group: null
     }
   },
   updated: function () {
@@ -58,14 +56,6 @@ export default {
     },
     group: function () {
       this.drawerOpen = false
-    }
-  },
-  created: function () {
-    if (gapi.auth2) {
-      const auth = gapi.auth2.getAuthInstance()
-      if (auth.isSignedIn.get()) {
-        this.userName = auth.currentUser.get().getBasicProfile().getName()
-      }
     }
   }
 }

@@ -8,6 +8,8 @@ export default new Vuex.Store({
   state: {
     loadedToGlobal: { type: -1 },
     status: '',
+    userIcon: null,
+    userName: null,
     token: localStorage.getItem('token') || '',
     useremail: localStorage.getItem('useremail') || '',
     pomodoro: {
@@ -38,10 +40,18 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    auth_update (state, user) {
+      state.useremail = user.useremail
+      state.userIcon = user.userIcon
+      state.userName = user.userName
+      state.token = user.token
+    },
     auth_success (state, user) {
       state.status = 'success'
-      state.toker = user.MT
-      state.useremail = user.ou
+      state.token = user.getId()
+      state.useremail = user.getEmail()
+      state.userIcon = user.getImageUrl()
+      state.userName = user.getName()
     },
     auth_error (state) {
       state.status = 'error'
@@ -50,6 +60,8 @@ export default new Vuex.Store({
       state.status = ''
       state.token = ''
       state.useremail = ''
+      state.userIcon = ''
+      state.userName = ''
     },
     SET_Workspaces (state, workspaces) {
       state.workspaces = workspaces
@@ -59,8 +71,7 @@ export default new Vuex.Store({
     async loadWorkspaces ({ commit }) {
       let ownerId = ''
       await axios.get(`user/${this.state.useremail}`).then((response) => { ownerId = response.data._id })
-      axios
-        .get('workspace/OwnerId/' + ownerId)
+      await axios.get('workspace/OwnerId/' + ownerId)
         .then(response => response.data)
         .then(workspaces => {
           commit('SET_Workspaces', workspaces)

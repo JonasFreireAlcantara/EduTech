@@ -32,13 +32,6 @@ export default {
       this.$gAuth
         .signIn()
         .then(async (GoogleUser) => {
-          // on success do something
-          // console.log('GoogleUser', GoogleUser)
-          // console.log('getId', GoogleUser.getId())
-          // console.log('basicprofile', GoogleUser.getBasicProfile().getName())
-          // console.log('getBasicProfile', GoogleUser.getBasicProfile())
-          // console.log('getAuthResponse', GoogleUser.getAuthResponse())
-
           let userOnBase = true
           const gUser = GoogleUser.getBasicProfile()
           await axios.get(`user/${GoogleUser.getBasicProfile().getEmail()}`).catch(() => { userOnBase = false })
@@ -58,8 +51,6 @@ export default {
             this.$store.commit('auth_success', gUser)
             this.$router.push({ name: 'Workspace' })
           }
-          console.log(GoogleUser.getAuthResponse().access_token)
-          // router.push('/home')
         })
         .catch(error => {
           console.log('error', error)

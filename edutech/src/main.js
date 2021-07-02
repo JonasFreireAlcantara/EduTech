@@ -9,7 +9,7 @@ import UUID from 'vue-uuid'
 import store from './store'
 import VueSimpleAlert from 'vue-simple-alert'
 import './app.scss'
-import GoogleAuth from '@/config/google_oAuth.js'
+import GoogleAuth from './config/google_oAuth.js'
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
