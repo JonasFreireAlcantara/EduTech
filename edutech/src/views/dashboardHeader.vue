@@ -108,7 +108,7 @@ export default {
     this.actualWorkspace = workspaces.length > 0 ? workspaces[0] : null
     this.$emit('actualWorkspace', this.actualWorkspace)
     if (this.actualWorkspace === null) {
-      this.$emit('noWorkspace', 'É preciso ter ao menos um workspace para visualizar os status dos seus workspaces')
+      this.$emit('noWorkspace', true)
     }
   },
   computed: {

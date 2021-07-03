@@ -7,14 +7,18 @@
     <div class="h-line"></div>
 
     <div v-if="actualWorkspace !== null">
-      <DashContent :actualWorkspace="actualWorkspace"
-        :progress="progress"
-        :value="90"
-        :options="options"
-        :series="series"/>
+      <transition name="appear">
+        <DashContent :actualWorkspace="actualWorkspace"
+          :progress="progress"
+          :value="90"
+          :options="options"
+          :series="series"/>
+      </transition>
     </div>
     <div v-else>
-      <h3 class="center__h3">{{ noWorkspaceMessage }}</h3>
+      <transition name="appear">
+        <h3 v-if="noWorkspaceMessage" class="center__h3">É preciso ter ao menos um workspace para visualizar os status dos seus workspaces</h3>
+      </transition>
     </div>
     
   </div>
@@ -40,7 +44,7 @@ export default {
     return {
       actualWorkspace: null,
       progress: 70,
-      noWorkspaceMessage: '',
+      noWorkspaceMessage: false,
       options: {
         colors: ['#541388'],
         chart: {
@@ -68,6 +72,20 @@ export default {
 </script>
 
 <style>
+.appear-enter-active,
+.appear-leave-active {
+  transition: opacity .5s;
+}
+
+.appear-enter,
+.appear-leave-to {
+  opacity: 0;
+}
+
+.appear-leave,
+.appear-enter-to {
+  opacity: 1;
+}
 
 .horas__estudadas {
   justify-content: center;
