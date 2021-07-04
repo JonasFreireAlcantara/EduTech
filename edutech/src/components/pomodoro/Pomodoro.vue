@@ -176,7 +176,7 @@ export default {
       var pomodoroValues = {
         StartingSeconds: this.seconds,
         StartingMinutes: this.minutes,
-        CreatedOn: new Date()
+        CreatedOn: new Date().toISOString().substr(0, 10)
       }
       await axios.post('pomodoro', pomodoroValues).then(async (res) => {
         var workspace = this.getWorkspaceById(this.pomodoro.workspaceId)
@@ -188,7 +188,7 @@ export default {
     async endPomodoro () {
       var pomodoro = await axios.get(`pomodoro/${this.pomodoro.pomodoroId}`)
       pomodoro = pomodoro.data
-      pomodoro.EndedOn = new Date()
+      pomodoro.EndedOn = new Date().toISOString().substr(0, 10)
       pomodoro.RemainingMinutes = this.pomodoro.min
       pomodoro.RemainingSeconds = this.pomodoro.secs
       await axios.put(`pomodoro/${this.pomodoro.pomodoroId}`, pomodoro)

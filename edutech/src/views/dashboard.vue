@@ -2,14 +2,20 @@
   <div>
     <TopComponent :isLogged="true"/>
     <DashHeader @actualWorkspace="actualWorkspace = $event"
-      @noWorkspace="noWorkspaceMessage = $event"/>
+      @noWorkspace="noWorkspaceMessage = $event"
+      @initialDate="initialDate = $event"
+      @endDate="endDate = $event"
+      :populateHoursStudiedDash="populateHoursStudiedDash"/>
 
     <div class="h-line"></div>
 
     <div v-if="actualWorkspace !== null">
       <transition name="appear">
         <DashContent :actualWorkspace="actualWorkspace"
-          :progress="progress"
+          :initialDate="initialDate"
+          :totalStudyTime="totalStudyTime"
+          :totalRestTime="totalRestTime"
+          :endDate="endDate"
           :value="90"
           :options="options"
           :series="series"/>
@@ -25,6 +31,7 @@
 </template>
 
 <script>
+import axios from '../variables/variables'
 import TopComponent from '../components/top-component.vue'
 import DashContent from './dashboardContent'
 import DashHeader from './dashboardHeader'
@@ -38,30 +45,82 @@ export default {
   methods: {
     handleData: function (e) {
       [this.leftSideMenuActive, this.rightSideMenuActive] = e
+    },
+    populateHoursStudiedDash: async function () {
+      var studyTime = 0
+      var restTime = 0
+      var aWorkspace = this.actualWorkspace
+      var iDate = new Date(this.initialDate.replaceAll('-', '/'))
+      var eDate = new Date(this.endDate.replaceAll('-', '/'))
+
+      const pomodoroId = this.$store.state.workspaces.find(workspace => aWorkspace === workspace.name).pomodoros
+
+      this.options.xaxis.categories = []
+      this.series[0].data = []
+      this.series[1].data = []
+
+      if (pomodoroId.length > 0) {
+        var pomodoroObjects = await Promise.all(pomodoroId.map(id => `pomodoro/${id}`).map(async function (id) {
+          var response = null
+          await axios.get(id).then(res => {
+            response = res.data
+          })
+          return response
+        }))
+
+        pomodoroObjects.forEach(el => {
+          var initialDate = new Date(el.CreatedOn).toISOString().substr(0, 10).replaceAll('-', '/')
+          var endDate = new Date(el.EndedOn).toISOString().substr(0, 10).replaceAll('-', '/')
+          if (new Date(initialDate) >= iDate && new Date(endDate) <= eDate) {
+            const time = ((el.StartingMinutes * 60) + (el.StartingSeconds)) - ((el.RemainingMinutes * 60) + (el.RemainingSeconds))
+            const category = initialDate.split('/').slice(-2).reverse().join('/')
+            console.log(el)
+            console.log(time)
+            if (this.options.xaxis.categories.indexOf(category) === -1) {
+              this.options.xaxis.categories.push(category)
+            }
+            var index = this.options.xaxis.categories.indexOf(category)
+            if (el.StartingMinutes >= 25) {
+              this.series[0].data[index] = this.series[0].data[index] ? this.series[0].data[index] + Number((time / (60 * 60)).toFixed(3)) : Number((time / (60 * 60)).toFixed(3))
+              studyTime += time
+            } else {
+              this.series[1].data[index] = this.series[1].data[index] ? this.series[1].data[index] + Number((time / (60 * 60)).toFixed(3)) : Number((time / (60 * 60)).toFixed(3))
+              restTime += time
+            }
+          }
+        })
+      }
+      this.options = JSON.parse(JSON.stringify(this.options))
+      this.series = JSON.parse(JSON.stringify(this.series))
+      this.totalStudyTime = studyTime
+      this.totalRestTime = restTime
     }
   },
   data () {
     return {
       actualWorkspace: null,
-      progress: 70,
+      initialDate: null,
+      endDate: null,
+      totalStudyTime: 0,
+      totalRestTime: 0,
       noWorkspaceMessage: false,
       options: {
-        colors: ['#541388'],
+        colors: ['#B0C4DE', '#02C3BD'],
         chart: {
           id: 'grafico-de-horas-estudadas'
         },
         xaxis: {
-          categories: ['01/02', '02/02', '03/02', '04/02', '05/02', '06/02', '07/02', '08/02']
+          categories: []
         }
       },
       series: [
         {
           name: 'Horas estudadas',
-          data: [2.8, 3.4, 1.91, 1.12, 4, 3.25, 2.5, 2.3]
+          data: []
         },
         {
-          name: 'Horas livre',
-          data: [4.2, 3.6]
+          name: 'Horas livres',
+          data: []
         }
       ],
       leftSideMenuActive: false,

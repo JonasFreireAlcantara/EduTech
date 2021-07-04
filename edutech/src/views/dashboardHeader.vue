@@ -26,7 +26,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
                 class="mt-2"
-                v-model="initialDate"
+                v-model="initialDateToSearch"
                 label="Período Inicial"
                 prepend-icon="mdi-calendar"
                 readonly
@@ -56,7 +56,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
                 class="mt-2"
-                v-model="endDate"
+                v-model="endDateToSearch"
                 label="Período Final"
                 prepend-icon="mdi-calendar"
                 readonly
@@ -75,6 +75,7 @@
 
       <b-col :align="alignCenter">
         <v-btn
+          @click="filter()"
           class="mt-10"
           rounded
           color="#FFD400"
@@ -99,6 +100,9 @@ export default {
       actualWorkspace: null
     }
   },
+  props: {
+    populateHoursStudiedDash: Function
+  },
   created: async function () {
     let workspaces = this.getWorkspaceNames
     if (workspaces.length === 0) {
@@ -107,8 +111,17 @@ export default {
     }
     this.actualWorkspace = workspaces.length > 0 ? workspaces[0] : null
     this.$emit('actualWorkspace', this.actualWorkspace)
-    if (this.actualWorkspace === null) {
-      this.$emit('noWorkspace', true)
+    await this.filter()
+  },
+  methods: {
+    filter: async function () {
+      if (this.actualWorkspace === null) {
+        this.$emit('noWorkspace', true)
+      } else {
+        this.$emit('initialDate', this.initialDate)
+        this.$emit('endDate', this.endDate)
+        await this.populateHoursStudiedDash()
+      }
     }
   },
   computed: {
@@ -125,6 +138,22 @@ export default {
       },
       set: function (newValue) {
         this.$emit('actualWorkspace', newValue)
+      }
+    },
+    initialDateToSearch: {
+      get: function () {
+        return this.initialDate
+      },
+      set: function (newDate) {
+        this.$emit('initialDate', newDate)
+      }
+    },
+    endDateToSearch: {
+      get: function () {
+        return this.endDate
+      },
+      set: function (newDate) {
+        this.$emit('endDate', newDate)
       }
     }
   }

@@ -1,24 +1,20 @@
 <template>
   <div>
       <b-row class="workspace-info">
-        <b-col class="progress-bar" md="8">
-          <strong>Progresso do Workspace: {{actualWorkspace}}</strong>
-          <v-progress-linear
-            class="mt-2"
-            :buffer-value="progress"
-            stream
-            color="#541388"
-            height="20"
-            rounded
-          >
-            <strong>{{Math.ceil(progress)}}%</strong>
-          </v-progress-linear>
-        </b-col>
         <b-col>
-          <b-row :justify="alignCenter" class="text-center horas__estudadas"><strong>Tempo total estudado</strong></b-row>
+          <b-row :justify="alignCenter" class="text-center horas__estudadas"><strong>Tempo total de Estudo</strong></b-row>
           <b-row :justify="alignCenter">
             <v-progress-circular class="mt-2 mx-auto" :size="70" :value="value" color="#541388">
               <span class="hours">{{getTimeStudied}}</span>
+            </v-progress-circular>
+          </b-row>
+        </b-col>
+
+        <b-col>
+          <b-row :justify="alignCenter" class="text-center horas__estudadas"><strong>Tempo total de Descanso</strong></b-row>
+          <b-row :justify="alignCenter">
+            <v-progress-circular class="mt-2 mx-auto" :size="70" :value="value" color="#541388">
+              <span class="hours">{{getTimeRest}}</span>
             </v-progress-circular>
           </b-row>
         </b-col>
@@ -44,51 +40,40 @@
 </template>
 
 <script>
-import axios from '../variables/variables'
 
 export default {
   data () {
     return {
-      alignCenter: 'center',
-      time: 0
+      alignCenter: 'center'
     }
   },
   props: {
     actualWorkspace: String,
-    progress: Number,
+    initialDate: String,
+    endDate: String,
     value: Number,
     options: Object,
-    series: Array
+    series: Array,
+    totalStudyTime: Number,
+    totalRestTime: Number
   },
   computed: {
     getTimeStudied: function () {
-      (async () => { await this.calculateTime().then(res => { this.time = res }) })()
-      return this.getHoursStudy(this.time)
+      return this.getHoursStudy(this.totalStudyTime)
+    },
+    getTimeRest: function () {
+      return this.getHoursStudy(this.totalRestTime)
     }
   },
   methods: {
     getHoursStudy: function (hoursStudy) {
       let timeStudy = hoursStudy < 60 ? `${hoursStudy} s` : (hoursStudy < 60 * 60 ? 'm' : 'h')
       if (timeStudy === 'm') {
-        timeStudy = `${hoursStudy / 60} m`
+        timeStudy = `${(hoursStudy / 60).toFixed(2)} m`
       } else if (timeStudy === 'h') {
-        timeStudy = `${hoursStudy / (60 * 60)} h`
+        timeStudy = `${(hoursStudy / (60 * 60)).toFixed(2)} h`
       }
       return timeStudy
-    },
-    calculateTime: async function () {
-      let result = 0
-      const pomodoroId = this.$store.state.workspaces.find(workspace => this.actualWorkspace === workspace.name).pomodoros
-      if (pomodoroId.length > 0) {
-        await Promise.all(pomodoroId.map(id => `pomodoro/${id}`).map(id => axios.get(id))).then(res => {
-          res.forEach(el => {
-            const end = new Date(el.data.EndedOn)
-            const created = new Date(el.data.CreatedOn)
-            result += Math.floor((end - created) / 1000)
-          })
-        }).catch(err => console.error(err))
-      }
-      return result
     }
   }
 }

@@ -46,7 +46,7 @@ export default {
           }
           this.$store.commit('auth_update', user)
         })
-			}
+      }
       this.userIcon = this.$store.state.userIcon
       this.userName = this.$store.state.userName
     }
