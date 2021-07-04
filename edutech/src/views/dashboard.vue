@@ -69,23 +69,23 @@ export default {
         }))
 
         pomodoroObjects.forEach(el => {
-          var initialDate = new Date(el.CreatedOn).toISOString().substr(0, 10).replaceAll('-', '/')
-          var endDate = new Date(el.EndedOn).toISOString().substr(0, 10).replaceAll('-', '/')
-          if (new Date(initialDate) >= iDate && new Date(endDate) <= eDate) {
-            const time = ((el.StartingMinutes * 60) + (el.StartingSeconds)) - ((el.RemainingMinutes * 60) + (el.RemainingSeconds))
-            const category = initialDate.split('/').slice(-2).reverse().join('/')
-            console.log(el)
-            console.log(time)
-            if (this.options.xaxis.categories.indexOf(category) === -1) {
-              this.options.xaxis.categories.push(category)
-            }
-            var index = this.options.xaxis.categories.indexOf(category)
-            if (el.StartingMinutes >= 25) {
-              this.series[0].data[index] = this.series[0].data[index] ? this.series[0].data[index] + Number((time / (60 * 60)).toFixed(3)) : Number((time / (60 * 60)).toFixed(3))
-              studyTime += time
-            } else {
-              this.series[1].data[index] = this.series[1].data[index] ? this.series[1].data[index] + Number((time / (60 * 60)).toFixed(3)) : Number((time / (60 * 60)).toFixed(3))
-              restTime += time
+          if (el.EndedOn) {
+            var initialDate = new Date(el.CreatedOn).toISOString().substr(0, 10).replaceAll('-', '/')
+            var endDate = new Date(el.EndedOn).toISOString().substr(0, 10).replaceAll('-', '/')
+            if (new Date(initialDate) >= iDate && new Date(endDate) <= eDate) {
+              const time = ((el.StartingMinutes * 60) + (el.StartingSeconds)) - ((el.RemainingMinutes * 60) + (el.RemainingSeconds))
+              const category = initialDate.split('/').slice(-2).reverse().join('/')
+              if (this.options.xaxis.categories.indexOf(category) === -1) {
+                this.options.xaxis.categories.push(category)
+              }
+              var index = this.options.xaxis.categories.indexOf(category)
+              if (el.StartingMinutes >= 25) {
+                this.series[0].data[index] = this.series[0].data[index] ? (Number(this.series[0].data[index]) + Number(time / (60 * 60))).toFixed(3) : Number((time / (60 * 60)).toFixed(3))
+                studyTime += time
+              } else {
+                this.series[1].data[index] = this.series[1].data[index] ? (Number(this.series[1].data[index]) + Number(time / (60 * 60))).toFixed(3) : Number((time / (60 * 60)).toFixed(3))
+                restTime += time
+              }
             }
           }
         })
