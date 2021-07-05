@@ -88,7 +88,7 @@
               :color="selectedEvent.color"
               light
             >
-              <v-toolbar-title v-html="selectedEvent.time"></v-toolbar-title>
+              <v-toolbar-title v-html="selectedEvent.title"></v-toolbar-title>
               <v-spacer></v-spacer>
               <v-btn icon @click="selectedOpen = false">
                 <v-icon>mdi-close</v-icon>
